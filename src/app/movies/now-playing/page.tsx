@@ -5,9 +5,9 @@ import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useNowPlayingMovies from "@/hooks/movies/useNowPlayingMovies";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function NowPlayingMoviesPage() {
+function NowPlayingMoviesPage() {
   const { language } = useLanguage();
   const params = useSearchParams();
   const [page, setPage] = useState<number>(1);
@@ -51,5 +51,13 @@ export default function NowPlayingMoviesPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function NowPlayingMoviesMainPage() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <NowPlayingMoviesPage />
+    </Suspense>
   );
 }
