@@ -1,14 +1,14 @@
 "use client";
 import PageButtons from "@/components/movies/PageButtons";
 import Spinner from "@/components/Spinner";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useMoviesFiltered from "@/hooks/movies/useMoviesFiltered";
 import MovieCard from "@/components/movies/MovieCard";
 import MovieFilters from "@/components/movies/MovieFilters";
 
-export default function ByGenreMoviesPage() {
+function FilteredMoviesPage() {
   const [page, setPage] = useState<number>(1);
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
   const [order_by, setOrder_by] = useState<string>("popularity");
@@ -113,5 +113,13 @@ export default function ByGenreMoviesPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function FilteredMoviesMainPage() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <FilteredMoviesPage />
+    </Suspense>
   );
 }
