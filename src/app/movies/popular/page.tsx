@@ -38,22 +38,18 @@ export default function NowPlayingMoviesPage() {
             actualPage={actualPage}
             totalPages={totalPages}
             baseUrl="/movies/popular?"
-          />
-          <ul className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-2">
-            {movies.map((movie) => (
-              <li
-                key={movie.id + movie.title}
-                className="group overflow-hidden rounded-xl group bg-gray-800 relative"
-              >
-                <MovieCard movie={movie} />
-              </li>
-            ))}
-          </ul>
-          <PageButtons
-            actualPage={actualPage}
-            totalPages={totalPages}
-            baseUrl="/movies/popular?"
-          />
+          >
+            <ul className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-2">
+              {movies.map((movie) => (
+                <li
+                  key={movie.id + movie.title}
+                  className="group overflow-hidden rounded-xl group bg-gray-800 relative"
+                >
+                  <MovieCard movie={movie} />
+                </li>
+              ))}
+            </ul>
+          </PageButtons>
         </>
       )}
     </div>
