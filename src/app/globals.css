@@ -19,3 +19,22 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Tamaño general de la barra */
+::-webkit-scrollbar {
+  width: 10px; /* Para barras verticales */
+  height: 10px; /* Para barras horizontales */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(36, 36, 36);
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
