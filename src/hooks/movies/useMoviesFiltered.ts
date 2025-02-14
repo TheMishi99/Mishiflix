@@ -1,4 +1,4 @@
-import { getMovies, getMoviesFiltered } from "@/services/movies.services";
+import { getMoviesFiltered } from "@/services/movies.services";
 import { Movie } from "@/types/my-types";
 import { useEffect, useState } from "react";
 

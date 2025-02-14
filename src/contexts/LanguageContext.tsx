@@ -2,9 +2,12 @@
 import { useState, useContext, createContext } from "react";
 
 // Creamos un contexto para el idioma
-const LanguageContext = createContext({
+const LanguageContext = createContext<{
+  language: string;
+  setLanguage: (language: string) => void;
+}>({
   language: "en-US",
-  setLanguage: (language: string) => {},
+  setLanguage: () => {},
 });
 
 // Creamos un provider para el idioma

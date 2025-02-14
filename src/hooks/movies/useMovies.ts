@@ -1,4 +1,4 @@
-import { getMovies, getNowPlayingMovies } from "@/services/movies.services";
+import { getMovies } from "@/services/movies.services";
 import { Movie } from "@/types/my-types";
 import { useEffect, useState } from "react";
 
@@ -50,7 +50,7 @@ export default function useMovies({
     };
     fetchMovies();
   }, [title, page, language]);
-  
+
   // Devolvemos los datos
   return {
     actualPage,

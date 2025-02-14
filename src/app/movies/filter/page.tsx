@@ -4,7 +4,6 @@ import Spinner from "@/components/Spinner";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
-import useGenres from "@/hooks/genres/useGenres";
 import useMoviesFiltered from "@/hooks/movies/useMoviesFiltered";
 import MovieCard from "@/components/movies/MovieCard";
 import MovieFilters from "@/components/movies/MovieFilters";

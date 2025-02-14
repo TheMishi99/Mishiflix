@@ -5,7 +5,6 @@ import useMovies from "@/hooks/movies/useMovies";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
-import useGenres from "@/hooks/genres/useGenres";
 import MovieCard from "@/components/movies/MovieCard";
 
 export default function SearchPage() {
@@ -31,11 +30,6 @@ export default function SearchPage() {
     page: page ? parseInt(page) : 1,
     language,
   });
-  const {
-    genres,
-    isLoading: genresLoading,
-    isError: genresError,
-  } = useGenres({ language });
 
   const titlesByLanguage = {
     "en-US": {

@@ -94,27 +94,28 @@ export async function usersAddFavoriteMovie({
   movie_id: number;
 }): Promise<[string | null, User | null]> {
   try {
-    let userLogged = JSON.parse(
+    const userLogged = JSON.parse(
       window.sessionStorage.getItem("userLogged") || "null"
     ) as User | null;
     if (!userLogged) throw new Error("User not found");
+    let newUser = { ...userLogged };
     if (userLogged.favoriteMovies.includes(movie_id)) {
-      userLogged.favoriteMovies = userLogged.favoriteMovies.filter(
+      newUser.favoriteMovies = userLogged.favoriteMovies.filter(
         (movie) => movie !== movie_id
       );
     } else {
-      userLogged.favoriteMovies.push(movie_id);
+      newUser.favoriteMovies.push(movie_id);
     }
-    window.sessionStorage.setItem("userLogged", JSON.stringify(userLogged));
+    window.sessionStorage.setItem("userLogged", JSON.stringify(newUser));
     let localUsers = JSON.parse(
       window.localStorage.getItem("localUsers") || "[]"
     ) as User[];
     localUsers = localUsers.map((user) =>
-      user.username === userLogged.username ? userLogged : user
+      user.username === newUser.username ? newUser : user
     );
     window.localStorage.setItem("localUsers", JSON.stringify(localUsers));
 
-    return [null, userLogged];
+    return [null, newUser];
   } catch (error) {
     if (error instanceof Error) {
       return [error.message, null];
@@ -129,26 +130,27 @@ export async function usersAddFavoriteSeries({
   series_id: number;
 }): Promise<[string | null, User | null]> {
   try {
-    let userLogged = JSON.parse(
+    const userLogged = JSON.parse(
       window.sessionStorage.getItem("userLogged") || "null"
     ) as User | null;
     if (!userLogged) throw new Error("User not found");
+    let newUser = { ...userLogged };
     if (userLogged.favoriteSeries.includes(series_id)) {
-      userLogged.favoriteSeries = userLogged.favoriteSeries.filter(
+      newUser.favoriteSeries = newUser.favoriteSeries.filter(
         (movie) => movie !== series_id
       );
     } else {
-      userLogged.favoriteSeries.push(series_id);
+      newUser.favoriteSeries.push(series_id);
     }
-    window.sessionStorage.setItem("userLogged", JSON.stringify(userLogged));
+    window.sessionStorage.setItem("userLogged", JSON.stringify(newUser));
     let localUsers = JSON.parse(
       window.localStorage.getItem("localUsers") || "[]"
     ) as User[];
     localUsers = localUsers.map((user) =>
-      user.username === userLogged.username ? userLogged : user
+      user.username === newUser.username ? newUser : user
     );
     window.localStorage.setItem("localUsers", JSON.stringify(localUsers));
-    return [null, userLogged];
+    return [null, newUser];
   } catch (error) {
     if (error instanceof Error) {
       return [error.message, null];
