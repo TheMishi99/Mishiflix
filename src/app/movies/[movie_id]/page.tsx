@@ -53,7 +53,12 @@ export default function MovieDetailsPage() {
   }: {
     movie_id: number;
   }) => {
-    const addToFavoriteSuccess = await addFavoriteMovie({ movie_id });
+    const addFavoriteMovieSuccess = await addFavoriteMovie({ movie_id });
+    alert(
+      addFavoriteMovieSuccess
+        ? "Pelicula añadida a favoritos con exito"
+        : "Error al añadir la pelicula a favoritos"
+    );
   };
 
   return (

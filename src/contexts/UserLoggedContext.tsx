@@ -30,36 +30,17 @@ const UserLoggedContext = createContext<{
     username: string;
     password: string;
   }) => Promise<boolean>;
-  addFavoriteMovie: ({
-    movie_id,
-  }: {
-    movie_id: number;
-  }) => Promise<User | null>;
-  addFavoriteSeries: ({
-    series_id,
-  }: {
-    series_id: number;
-  }) => Promise<User | null>;
+  addFavoriteMovie: ({ movie_id }: { movie_id: number }) => Promise<boolean>;
+  addFavoriteSeries: ({ series_id }: { series_id: number }) => Promise<boolean>;
   logout: () => Promise<boolean>;
 }>({
   userLogged: null,
   error: null,
   loading: false,
-  signUp: ({
-    avatar,
-    username,
-    password,
-  }: {
-    avatar: string;
-    username: string;
-    password: string;
-  }) => Promise.resolve(false),
-  login: ({ username, password }: { username: string; password: string }) =>
-    Promise.resolve(false),
-  addFavoriteMovie: ({ movie_id }: { movie_id: number }) =>
-    Promise.resolve(null),
-  addFavoriteSeries: ({ series_id }: { series_id: number }) =>
-    Promise.resolve(null),
+  signUp: () => Promise.resolve(false),
+  login: () => Promise.resolve(false),
+  addFavoriteMovie: () => Promise.resolve(false),
+  addFavoriteSeries: () => Promise.resolve(false),
   logout: () => Promise.resolve(false),
 });
 
@@ -169,8 +150,9 @@ export const UserLoggedProvider = ({
     if (newUser) {
       setUserLogged(newUser);
       setLoading(false);
+      return true;
     }
-    return newUser;
+    return false;
   };
 
   // Funcion para añadir serie favorita
@@ -192,8 +174,9 @@ export const UserLoggedProvider = ({
     if (newUser) {
       setUserLogged(newUser);
       setLoading(false);
+      return true;
     }
-    return newUser;
+    return false;
   };
 
   // Funcion para el logout de usuarios

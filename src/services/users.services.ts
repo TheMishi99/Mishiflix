@@ -94,20 +94,27 @@ export async function usersAddFavoriteMovie({
   movie_id: number;
 }): Promise<[string | null, User | null]> {
   try {
-    const userLogged = JSON.parse(
+    let userLogged = JSON.parse(
       window.sessionStorage.getItem("userLogged") || "null"
     ) as User | null;
     if (!userLogged) throw new Error("User not found");
-    let newUser: User = { ...userLogged };
     if (userLogged.favoriteMovies.includes(movie_id)) {
-      newUser.favoriteMovies = userLogged.favoriteMovies.filter(
+      userLogged.favoriteMovies = userLogged.favoriteMovies.filter(
         (movie) => movie !== movie_id
       );
     } else {
-      newUser.favoriteMovies.push(movie_id);
+      userLogged.favoriteMovies.push(movie_id);
     }
-    window.sessionStorage.setItem("userLogged", JSON.stringify(newUser));
-    return [null, newUser];
+    window.sessionStorage.setItem("userLogged", JSON.stringify(userLogged));
+    let localUsers = JSON.parse(
+      window.localStorage.getItem("localUsers") || "[]"
+    ) as User[];
+    localUsers = localUsers.map((user) =>
+      user.username === userLogged.username ? userLogged : user
+    );
+    window.localStorage.setItem("localUsers", JSON.stringify(localUsers));
+
+    return [null, userLogged];
   } catch (error) {
     if (error instanceof Error) {
       return [error.message, null];
@@ -122,20 +129,26 @@ export async function usersAddFavoriteSeries({
   series_id: number;
 }): Promise<[string | null, User | null]> {
   try {
-    const userLogged = JSON.parse(
+    let userLogged = JSON.parse(
       window.sessionStorage.getItem("userLogged") || "null"
     ) as User | null;
     if (!userLogged) throw new Error("User not found");
-    let newUser: User = { ...userLogged };
     if (userLogged.favoriteSeries.includes(series_id)) {
-      newUser.favoriteSeries = userLogged.favoriteSeries.filter(
+      userLogged.favoriteSeries = userLogged.favoriteSeries.filter(
         (movie) => movie !== series_id
       );
     } else {
-      newUser.favoriteSeries.push(series_id);
+      userLogged.favoriteSeries.push(series_id);
     }
-    window.sessionStorage.setItem("userLogged", JSON.stringify(newUser));
-    return [null, newUser];
+    window.sessionStorage.setItem("userLogged", JSON.stringify(userLogged));
+    let localUsers = JSON.parse(
+      window.localStorage.getItem("localUsers") || "[]"
+    ) as User[];
+    localUsers = localUsers.map((user) =>
+      user.username === userLogged.username ? userLogged : user
+    );
+    window.localStorage.setItem("localUsers", JSON.stringify(localUsers));
+    return [null, userLogged];
   } catch (error) {
     if (error instanceof Error) {
       return [error.message, null];
