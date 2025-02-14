@@ -1,4 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
+import Image from "next/image";
 import React, { useState } from "react";
 
 export default function LanguageSelector() {
@@ -29,10 +30,12 @@ export default function LanguageSelector() {
           className="w-40 border border-zinc-800 bg-zinc-900 rounded-lg p-2 shadow-md flex items-center justify-center cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <img
-            src={options.find((opt) => opt.value === language)?.img}
+          <Image
+            src={options.find((opt) => opt.value === language)!.img}
             alt={language}
-            className="w-10 h-10 mr-2"
+            className="mr-2"
+            width={20}
+            height={20}
           />
           {options.find((opt) => opt.value === language)?.label}
         </div>
@@ -44,10 +47,12 @@ export default function LanguageSelector() {
                 className="p-2 flex items-center cursor-pointer hover:bg-zinc-800"
                 onClick={() => handleLanguageChange(option.value)}
               >
-                <img
+                <Image
                   src={option.img}
                   alt={option.label}
-                  className="w-10 h-10 mr-2"
+                  className="mr-2"
+                  width={20}
+                  height={20}
                 />
                 {option.label}
               </div>

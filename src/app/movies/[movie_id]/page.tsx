@@ -5,6 +5,7 @@ import { useUserLogged } from "@/contexts/UserLoggedContext";
 import useMovie from "@/hooks/movies/useMovie";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function MovieDetailsPage() {
   const { userLogged, addFavoriteMovie } = useUserLogged();
@@ -83,12 +84,14 @@ export default function MovieDetailsPage() {
               id="movie-info-1"
               className="flex flex-col justify-center items-center p-2 gap-2"
             >
-              <img
+              <Image
                 src={
                   "https://media.themoviedb.org/t/p/w220_and_h330_face" +
                   movie.poster_path
                 }
                 alt={movie.title}
+                width={20}
+                height={20}
               />
               <h3 className="text-xl">{movie.title}</h3>
               <button

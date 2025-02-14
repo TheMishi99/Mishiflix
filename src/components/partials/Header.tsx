@@ -12,14 +12,17 @@ export default function Header() {
 
   const titlesByLanguage = {
     "en-US": {
+      filterMovies: "Filter Movies",
       login: "Login",
       signUp: "Sign Up",
     },
     "es-AR": {
+      filterMovies: "Filtrar Peliculas",
       login: "Iniciar sesión",
       signUp: "Registrarse",
     },
     "fr-FR": {
+      filterMovies: "Filtrer les films",
       login: "S'identifier",
       signUp: "S'inscrire",
     },
@@ -39,24 +42,35 @@ export default function Header() {
       </div>
       <div className="w-full flex justify-between sm:justify-end items-center p-2 gap-2">
         <LanguageSelector />
-        <nav className="flex justify-center items-center">
-          <ul className="flex justify-center items-center p-2 gap-2">
+        <nav className="w-[45%] flex justify-center items-center">
+          <ul className="w-full flex justify-between items-center p-2 gap-2">
             {userLogged ? (
-              <li>
-                <Link
-                  href="/auth/profile"
-                  className="flex justify-center items-center p-2 gap-2 border border-zinc-800 rounded-xl"
-                >
-                  <Image
-                    src={userLogged.avatar}
-                    alt={userLogged.username}
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                  />
-                  <span>{userLogged.username}</span>
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link href="/movies/filter">
+                    {
+                      titlesByLanguage[
+                        language as keyof typeof titlesByLanguage
+                      ].filterMovies
+                    }
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/auth/profile"
+                    className="flex justify-center items-center p-2 gap-2 border border-zinc-800 rounded-xl"
+                  >
+                    <Image
+                      src={userLogged.avatar}
+                      alt={userLogged.username}
+                      width={40}
+                      height={40}
+                      className="rounded-full"
+                    />
+                    <span>{userLogged.username}</span>
+                  </Link>
+                </li>
+              </>
             ) : (
               <>
                 <li>
