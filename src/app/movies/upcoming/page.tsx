@@ -57,5 +57,9 @@ function UpcomingMoviesPage() {
 }
 
 export default function UpcomingMoviesMainPage() {
-  return <Suspense fallback={<Spinner />}>UpcomingMoviesPage</Suspense>;
+  return (
+    <Suspense fallback={<Spinner />}>
+      <UpcomingMoviesPage />
+    </Suspense>
+  );
 }
