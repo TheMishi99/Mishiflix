@@ -84,14 +84,12 @@ export default function MovieDetailsPage() {
               id="movie-info-1"
               className="flex flex-col justify-center items-center p-2 gap-2"
             >
-              <Image
+              <img
                 src={
                   "https://media.themoviedb.org/t/p/w220_and_h330_face" +
                   movie.poster_path
                 }
                 alt={movie.title}
-                width={20}
-                height={20}
               />
               <h3 className="text-xl">{movie.title}</h3>
               <button
