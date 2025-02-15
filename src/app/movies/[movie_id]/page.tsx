@@ -5,7 +5,6 @@ import { useUserLogged } from "@/contexts/UserLoggedContext";
 import useMovie from "@/hooks/movies/useMovie";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 
 export default function MovieDetailsPage() {
   const { userLogged, addFavoriteMovie } = useUserLogged();
