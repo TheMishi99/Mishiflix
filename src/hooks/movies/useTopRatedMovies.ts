@@ -1,19 +1,14 @@
-import { getMoviesFiltered } from "@/services/movies.services";
-import { Movie } from "@/types/my-types";
+"use client";
+import { getTopRatedMovies } from "@/services/movies.services";
+import { Movie } from "@/types/movie-types";
 import { useEffect, useState } from "react";
 
-export default function useMoviesFiltered({
+export default function useTopRatedMovies({
   page,
   language,
-  genres,
-  order_by,
-  order,
 }: {
   page: number;
   language: string;
-  genres: number[];
-  order_by: string;
-  order: string;
 }): {
   actualPage: number;
   totalPages: number;
@@ -30,21 +25,15 @@ export default function useMoviesFiltered({
   const [isError, setIsError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMovies = async () => {
+    const fetchTopRatedMovies = async () => {
       try {
-        // Obtenemos las películas filtradas
-        const [error, data] = await getMoviesFiltered({
-          genres,
-          page,
-          language,
-          order_by,
-          order,
-        });
+        // Obtener las películas próximas a estrenarse
+        const [error, data] = await getTopRatedMovies({ page, language });
 
-        // Si hay un error, lanzamos una excepción
+        // Si hay un error, lanzar una excepción
         if (error) throw new Error(error);
 
-        // Si hay datos, los guardamos
+        // Si hay datos, actualizar el estado de las películas
         if (data) {
           setMovies(data.results);
           setTotalResults(data.total_results);
@@ -58,10 +47,10 @@ export default function useMoviesFiltered({
         setIsLoading(false);
       }
     };
-    fetchMovies();
-  }, [page, language, genres, order_by, order]);
+    fetchTopRatedMovies();
+  }, [page, language]);
 
-  // Devolvemos los datos
+  // Devolver el estado actual
   return {
     actualPage,
     totalPages,

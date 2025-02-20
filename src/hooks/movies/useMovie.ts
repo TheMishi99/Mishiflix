@@ -1,5 +1,6 @@
+"use client";
 import { getMovieDetails } from "@/services/movies.services";
-import { MovieDetailed } from "@/types/my-types";
+import { DetailedMovie } from "@/types/movie-types";
 import { useEffect, useState } from "react";
 
 export default function useMovie({
@@ -9,11 +10,11 @@ export default function useMovie({
   movie_id: number;
   language: string;
 }): {
-  movie: MovieDetailed | null;
+  movie: DetailedMovie | null;
   isLoading: boolean;
   isError: string | null;
 } {
-  const [movie, setMovie] = useState<MovieDetailed | null>(null);
+  const [movie, setMovie] = useState<DetailedMovie | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<string | null>(null);
   useEffect(() => {

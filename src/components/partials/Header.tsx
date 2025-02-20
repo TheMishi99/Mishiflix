@@ -1,10 +1,10 @@
 "use client";
-import Link from "next/link";
-import Image from "next/image";
-import SearchBar from "../SearchBar";
 import LanguageSelector from "../LanguageSelector";
 import { useUserLogged } from "@/contexts/UserLoggedContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import NavBar from "../NavBar";
+import { NavBarItem } from "@/types/other-types";
+import Link from "next/link";
 
 export default function Header() {
   const { userLogged } = useUserLogged();
@@ -12,95 +12,64 @@ export default function Header() {
 
   const titlesByLanguage = {
     "en-US": {
-      filterMovies: "Filter Movies",
       login: "Login",
       signUp: "Sign Up",
     },
     "es-AR": {
-      filterMovies: "Filtrar Peliculas",
       login: "Iniciar sesión",
       signUp: "Registrarse",
     },
     "fr-FR": {
-      filterMovies: "Filtrer les films",
       login: "S'identifier",
       signUp: "S'inscrire",
     },
   };
 
+  const navBarItems: NavBarItem[] = [
+    {
+      render_condition: userLogged != null,
+      title: (
+        <div className="flex justify-center items-center p-2 gap-2">
+          {userLogged && (
+            <>
+              <img
+                src={userLogged.avatar}
+                alt={userLogged.username}
+                className="size-10 rounded-full"
+              />
+              <span>{userLogged.username}</span>
+            </>
+          )}
+        </div>
+      ),
+      url: "/auth/profile",
+    },
+    {
+      render_condition: !userLogged,
+      title: titlesByLanguage[language as keyof typeof titlesByLanguage].login,
+      url: "/auth/login",
+    },
+    {
+      render_condition: !userLogged,
+      title: titlesByLanguage[language as keyof typeof titlesByLanguage].signUp,
+      url: "/auth/sign-up",
+    },
+  ];
+
   return (
-    <header className="flex flex-col sm:flex-row justify-center items-center gap-2 border-b border-b-zinc-700">
-      <div className="w-full flex flex-col sm:flex-row justify-center sm:justify-between items-center p-2 gap-2">
+    <header className="flex flex-col sm:flex-row justify-center sm:justify-between items-center p-2 gap-2 border-b border-b-zinc-700">
+      <div className="flex justify-center sm:justify-start items-center p-2 gap-2">
         <Link
           id="logo"
           className="flex justify-center items-center p-2 bg-red-600 rounded-xl"
           href="/"
         >
-          <h1 className="text-2xl">MISHIFLIX</h1>
+          <h1 className="text-3xl">MISHIFLIX</h1>
         </Link>
-        <SearchBar />
       </div>
-      <div className="w-full flex justify-between sm:justify-end items-center p-2 gap-2">
+      <div className="flex justify-end items-center p-2 gap-2">
         <LanguageSelector />
-        <nav className="w-[45%] flex justify-center items-center">
-          <ul className="w-full flex justify-between items-center p-2 gap-2">
-            {userLogged ? (
-              <>
-                <li>
-                  <Link href="/movies/filter">
-                    {
-                      titlesByLanguage[
-                        language as keyof typeof titlesByLanguage
-                      ].filterMovies
-                    }
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/auth/profile"
-                    className="flex justify-center items-center p-2 gap-2 border border-zinc-800 rounded-xl"
-                  >
-                    <Image
-                      src={userLogged.avatar}
-                      alt={userLogged.username}
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                    <span>{userLogged.username}</span>
-                  </Link>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link
-                    href="/auth/login"
-                    className="bg-zinc-500 hover:bg-zinc-400 transition-all rounded-xl p-2"
-                  >
-                    {
-                      titlesByLanguage[
-                        language as keyof typeof titlesByLanguage
-                      ].login
-                    }
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/auth/sign-up"
-                    className="bg-zinc-800 hover:bg-zinc-700 transition-all rounded-xl p-2"
-                  >
-                    {
-                      titlesByLanguage[
-                        language as keyof typeof titlesByLanguage
-                      ].signUp
-                    }
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </nav>
+        <NavBar navBarItems={navBarItems} />
       </div>
     </header>
   );

@@ -7,6 +7,7 @@ import Link from "next/link";
 import TMDB_Logo from "../../public/tmdb.svg";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { UserLoggedProvider } from "@/contexts/UserLoggedContext";
+import MainNavBar from "@/components/MainNavBar";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -31,15 +32,16 @@ export default function RootLayout({
           <UserLoggedProvider>
             <div
               id="app"
-              className="h-dvh flex flex-col p-2 gap-2 relative overflow-hidden"
+              className="h-dvh flex flex-col p-2 gap-2 relative overflow-y-scroll"
             >
               <Header />
+              <MainNavBar />
               {children}
               <div
                 id="sponsor"
                 className="absolute bottom-5 right-5 size-16 flex flex-col justify-center items-center bg-white p-2 rounded-xl gap-2"
               >
-                <Link href="https://www.themoviedb.org/" className="flex">
+                <Link href="https://www.themoviedb.org" className="flex">
                   <Image src={TMDB_Logo} alt={"TMDB Logo"} />
                 </Link>
               </div>

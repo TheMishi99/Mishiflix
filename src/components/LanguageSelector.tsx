@@ -27,7 +27,7 @@ export default function LanguageSelector() {
     <div className="flex items-center space-x-2">
       <div className="relative">
         <div
-          className="w-40 border border-zinc-800 bg-zinc-900 rounded-lg p-2 shadow-md flex items-center justify-center cursor-pointer"
+          className="w-32 border border-zinc-800 bg-zinc-900 rounded-lg p-2 shadow-md flex items-center justify-center cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
           <Image

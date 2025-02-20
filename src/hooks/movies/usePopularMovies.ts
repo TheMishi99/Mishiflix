@@ -1,5 +1,6 @@
+"use client";
 import { getPopularMovies } from "@/services/movies.services";
-import { Movie } from "@/types/my-types";
+import { Movie } from "@/types/movie-types";
 import { useEffect, useState } from "react";
 
 export default function usePopularMovies({

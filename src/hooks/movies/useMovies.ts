@@ -1,13 +1,14 @@
+"use client";
 import { getMovies } from "@/services/movies.services";
-import { Movie } from "@/types/my-types";
+import { Movie } from "@/types/movie-types";
 import { useEffect, useState } from "react";
 
 export default function useMovies({
-  title,
+  term,
   page,
   language,
 }: {
-  title: string;
+  term: string;
   page: number;
   language: string;
 }): {
@@ -29,7 +30,7 @@ export default function useMovies({
     const fetchMovies = async () => {
       try {
         // Obtenemos las películas
-        const [error, data] = await getMovies({ title, page, language });
+        const [error, data] = await getMovies({ term: term, page, language });
 
         // Si hay un error, lanzamos una excepción
         if (error) throw new Error(error);
@@ -49,7 +50,7 @@ export default function useMovies({
       }
     };
     fetchMovies();
-  }, [title, page, language]);
+  }, [term, page, language]);
 
   // Devolvemos los datos
   return {

@@ -1,20 +1,20 @@
 "use client";
-import PageButtons from "@/components/movies/PageButtons";
+import PageButtons from "@/components/PageButtons";
 import Spinner from "@/components/Spinner";
 import useMovies from "@/hooks/movies/useMovies";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MovieCard from "@/components/movies/MovieCard";
+import MoviesGrid from "@/components/movies/MoviesGrid";
 
 function SearchMoviesPage() {
-  const [title, setTitle] = useState<string | null>(null);
+  const [term, setTerm] = useState<string | null>(null);
   const [page, setPage] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const { language } = useLanguage();
 
   useEffect(() => {
-    setTitle(searchParams.get("title"));
+    setTerm(searchParams.get("term"));
     setPage(searchParams.get("page"));
   }, [searchParams]);
 
@@ -26,24 +26,24 @@ function SearchMoviesPage() {
     isLoading: moviesLoading,
     isError: moviesError,
   } = useMovies({
-    title: title || "",
+    term: term || "",
     page: page ? parseInt(page) : 1,
     language,
   });
 
   const titlesByLanguage = {
     "en-US": {
-      title: `Search Results: ${title}`,
+      title: `Search Results: ${term}`,
       notFound: "No movies found",
       results: `Total results: ${totalResults} (showing ${movies.length})`,
     },
     "es-AR": {
-      title: `Resultados de la búsqueda: ${title}`,
+      title: `Resultados de la búsqueda: ${term}`,
       notFound: "No se encontraron peliculas",
       results: `Resultados totales: ${totalResults} (se muestran ${movies.length})`,
     },
     "fr-FR": {
-      title: `Résultats de la recherche: ${title}`,
+      title: `Résultats de la recherche: ${term}`,
       notFound: "Aucun film trouvé",
       results: `Résultats totaux: ${totalResults} (montrant ${movies.length})`,
     },
@@ -74,18 +74,9 @@ function SearchMoviesPage() {
           <PageButtons
             actualPage={actualPage}
             totalPages={totalPages}
-            baseUrl={`/movies/search?title=${title}&`}
+            baseUrl={`/movies/search?term=${term}&`}
           >
-            <ul className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-2">
-              {movies.map((movie) => (
-                <li
-                  key={movie.id + movie.title}
-                  className="group overflow-hidden rounded-xl group bg-gray-800 relative"
-                >
-                  <MovieCard movie={movie} />
-                </li>
-              ))}
-            </ul>
+            <MoviesGrid movies={movies} />
           </PageButtons>
         </>
       )}
