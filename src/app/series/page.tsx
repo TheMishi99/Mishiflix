@@ -1,5 +1,4 @@
 "use client";
-import SearchBar from "@/components/SearchBar";
 import SeriesHorizontalSlideableList from "@/components/series/SeriesHorizontalSlideableList";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useAiringTodaySeries from "@/hooks/series/useAiringTodaySeries";

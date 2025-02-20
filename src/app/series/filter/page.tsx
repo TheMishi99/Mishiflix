@@ -4,10 +4,8 @@ import Spinner from "@/components/Spinner";
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MovieCard from "@/components/movies/MovieCard";
 import MovieFilters from "@/components/movies/MovieFilters";
 import useFilteredSeries from "@/hooks/series/useFilteredSeries";
-import SeriesCard from "@/components/series/SerieCard";
 import SeriesGrid from "@/components/series/SeriesGrid";
 
 function FilteredSeriesPage() {

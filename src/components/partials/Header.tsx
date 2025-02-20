@@ -4,6 +4,7 @@ import { useUserLogged } from "@/contexts/UserLoggedContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import NavBar from "../NavBar";
 import { NavBarItem } from "@/types/other-types";
+import Link from "next/link";
 
 export default function Header() {
   const { userLogged } = useUserLogged();
@@ -58,13 +59,13 @@ export default function Header() {
   return (
     <header className="flex flex-col sm:flex-row justify-center sm:justify-between items-center p-2 gap-2 border-b border-b-zinc-700">
       <div className="flex justify-center sm:justify-start items-center p-2 gap-2">
-        <a
+        <Link
           id="logo"
           className="flex justify-center items-center p-2 bg-red-600 rounded-xl"
           href="/"
         >
           <h1 className="text-3xl">MISHIFLIX</h1>
-        </a>
+        </Link>
       </div>
       <div className="flex justify-end items-center p-2 gap-2">
         <LanguageSelector />

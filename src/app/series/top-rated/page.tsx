@@ -1,6 +1,5 @@
 "use client";
 import PageButtons from "@/components/PageButtons";
-import SeriesCard from "@/components/series/SerieCard";
 import SeriesGrid from "@/components/series/SeriesGrid";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
