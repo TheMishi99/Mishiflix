@@ -39,7 +39,7 @@ function PopularSeriesPage() {
             totalPages={totalPages}
             baseUrl="/series/popular?"
           >
-            <SeriesGrid series={series} />
+            <SeriesGrid seriesList={series} />
           </PageButtons>
         </>
       )}

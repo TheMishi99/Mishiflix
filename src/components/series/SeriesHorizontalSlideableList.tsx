@@ -1,6 +1,6 @@
 "use client";
 import { Series } from "@/types/series-types";
-import SeriesCard from "./SerieCard";
+import SeriesCard from "./SeriesCard";
 import { useRef } from "react";
 
 export default function SeriesHorizontalSlideableList({

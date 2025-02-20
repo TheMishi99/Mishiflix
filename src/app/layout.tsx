@@ -5,10 +5,9 @@ import Header from "@/components/partials/Header";
 import Image from "next/image";
 import Link from "next/link";
 import TMDB_Logo from "../../public/tmdb.svg";
-import { LanguageProvider } from "@/contexts/LanguageContext";
+import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 import { UserLoggedProvider } from "@/contexts/UserLoggedContext";
-import NavBar from "@/components/NavBar";
-import { NavBarItem } from "@/types/other-types";
+import MainNavBar from "@/components/MainNavBar";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -26,11 +25,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const navBarItems: NavBarItem[] = [
-    { render_condition: true, title: "Movies", url: "/movies" },
-    { render_condition: true, title: "Series", url: "/series" },
-    { render_condition: true, title: "People", url: "/people" },
-  ];
   return (
     <html lang="en">
       <body className={`${roboto.className} antialiased`}>
@@ -41,7 +35,7 @@ export default function RootLayout({
               className="h-dvh flex flex-col p-2 gap-2 relative overflow-y-scroll"
             >
               <Header />
-              <NavBar navBarItems={navBarItems} />
+              <MainNavBar />
               {children}
               <div
                 id="sponsor"

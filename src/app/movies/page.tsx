@@ -29,7 +29,7 @@ export default function MoviesPage() {
         url: "/movies/now-playing",
       },
       {
-        title: "Upcoming Movies",
+        title: "Upcoming",
         movies: upcomingMovies,
         url: "/movies/upcoming",
       },

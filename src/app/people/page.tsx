@@ -11,9 +11,16 @@ export default function PeoplePage() {
     isLoading: peopleLoading,
     isError: peopleError,
   } = usePopularPeople({ page: 1, language });
+  const titlesByLanguage = {
+    "en-US": { popular: "Popular" },
+    "es-AR": { popular: "Populares" },
+    "fr-FR": { popular: "Populaires" },
+  };
   return (
     <div className="w-full flex flex-col justify-start items-center p-2 gap-2">
-      <h2 className="text-2xl">Popular People</h2>
+      <h2 className="text-2xl">
+        {titlesByLanguage[language as keyof typeof titlesByLanguage].popular}
+      </h2>
       {peopleLoading ? (
         <Spinner />
       ) : peopleError ? (

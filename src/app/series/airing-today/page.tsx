@@ -44,7 +44,7 @@ function AiringTodaySeriesPage() {
             totalPages={totalPages}
             baseUrl="/series/airing-today?"
           >
-            <SeriesGrid series={series} />
+            <SeriesGrid seriesList={series} />
           </PageButtons>
         </>
       )}

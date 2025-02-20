@@ -37,7 +37,7 @@ function OnTheAirSeriesPage() {
             totalPages={totalPages}
             baseUrl="/series/on-the-air?"
           >
-            <SeriesGrid series={series} />
+            <SeriesGrid seriesList={series} />
           </PageButtons>
         </>
       )}

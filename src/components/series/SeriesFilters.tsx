@@ -1,8 +1,8 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import useMovieGenres from "@/hooks/genres/useMovieGenres";
 import Spinner from "../Spinner";
+import useSeriesGenres from "@/hooks/genres/useSeriesGenres";
 
-export default function MovieFilters({
+export default function SeriesFilters({
   selectedGenres,
   setSelectedGenres,
   orderBy,
@@ -32,7 +32,7 @@ export default function MovieFilters({
     genres,
     isLoading: genresLoading,
     isError: genresError,
-  } = useMovieGenres({ language });
+  } = useSeriesGenres({ language });
 
   const genresTitleByLanguage = {
     "en-US": { genres: "Genres", notFound: "Genres not Found" },
@@ -44,37 +44,34 @@ export default function MovieFilters({
     "en-US": {
       orderBy: "Order By",
       options: {
-        title: "Title",
-        originalTitle: "Original Title",
+        name: "Name",
+        originalName: "Original Name",
         popularity: "Popularity",
-        releaseDate: "Release Date",
+        firstAirDate: "First Air Date",
         voteAverage: "Vote Average",
         voteCount: "Vote Count",
-        revenue: "Revenue",
       },
     },
     "es-AR": {
       orderBy: "Ordenar Por",
       options: {
-        title: "Título",
-        originalTitle: "Título Original",
+        name: "Nombre",
+        originalName: "Nombre Original",
         popularity: "Popularidad",
-        releaseDate: "Fecha de Estreno",
+        firstAirDate: "Fecha de Estreno",
         voteAverage: "Promedio de Votos",
         voteCount: "Cantidad de Votos",
-        revenue: "Recaudación",
       },
     },
     "fr-FR": {
       orderBy: "Trier Par",
       options: {
-        title: "Titre",
-        originalTitle: "Titre Original",
+        name: "Nom",
+        originalName: "Nom Original",
         popularity: "Popularité",
-        releaseDate: "Date de Sortie",
+        firstAirDate: "Date de Première Diffusion",
         voteAverage: "Moyenne des Votes",
         voteCount: "Nombre de Votes",
-        revenue: "Revenu",
       },
     },
   };
@@ -158,18 +155,18 @@ export default function MovieFilters({
           className="p-2 bg-zinc-900"
           defaultValue={orderBy}
         >
-          <option value="title">
+          <option value="name">
             {
               orderBySelectByLanguage[
                 language as keyof typeof orderBySelectByLanguage
-              ].options.title
+              ].options.name
             }
           </option>
-          <option value="original_title">
+          <option value="original_name">
             {
               orderBySelectByLanguage[
                 language as keyof typeof orderBySelectByLanguage
-              ].options.originalTitle
+              ].options.originalName
             }
           </option>
           <option value="popularity">
@@ -179,11 +176,11 @@ export default function MovieFilters({
               ].options.popularity
             }
           </option>
-          <option value="primary_release_date">
+          <option value="first_air_date">
             {
               orderBySelectByLanguage[
                 language as keyof typeof orderBySelectByLanguage
-              ].options.releaseDate
+              ].options.firstAirDate
             }
           </option>
           <option value="vote_average">
@@ -198,13 +195,6 @@ export default function MovieFilters({
               orderBySelectByLanguage[
                 language as keyof typeof orderBySelectByLanguage
               ].options.voteCount
-            }
-          </option>
-          <option value="revenue">
-            {
-              orderBySelectByLanguage[
-                language as keyof typeof orderBySelectByLanguage
-              ].options.revenue
             }
           </option>
         </select>

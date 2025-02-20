@@ -63,9 +63,18 @@ function FilteredMoviesPage() {
 
   return (
     <div className="flex flex-col justify-start items-center p-2 overflow-y-scroll">
+      <MovieFilters
+        selectedGenres={selectedGenres}
+        setSelectedGenres={setSelectedGenres}
+        orderBy={order_by}
+        setOrderBy={setOrder_by}
+        order={order}
+        setOrder={setOrder}
+      />
       <h2>
         {titlesByLanguage[language as keyof typeof titlesByLanguage].title}
       </h2>
+
       {moviesLoading ? (
         <Spinner />
       ) : moviesError ? (
@@ -82,14 +91,6 @@ function FilteredMoviesPage() {
                 .results
             }
           </p>
-          <MovieFilters
-            selectedGenres={selectedGenres}
-            setSelectedGenres={setSelectedGenres}
-            order_by={order_by}
-            setOrder_by={setOrder_by}
-            order={order}
-            setOrder={setOrder}
-          />
           <PageButtons
             actualPage={actualPage}
             totalPages={totalPages}

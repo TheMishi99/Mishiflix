@@ -76,7 +76,7 @@ function SearchSeriesPage() {
             totalPages={totalPages}
             baseUrl={`/series/search?term=${term}&`}
           >
-            <SeriesGrid series={series} />
+            <SeriesGrid seriesList={series} />
           </PageButtons>
         </>
       )}
