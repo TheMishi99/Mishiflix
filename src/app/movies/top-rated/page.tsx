@@ -1,5 +1,4 @@
 "use client";
-import MovieCard from "@/components/movies/MovieCard";
 import MoviesGrid from "@/components/movies/MoviesGrid";
 import PageButtons from "@/components/PageButtons";
 import Spinner from "@/components/Spinner";

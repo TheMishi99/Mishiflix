@@ -5,7 +5,6 @@ import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useFilteredMovies from "@/hooks/movies/useFilteredMovies";
-import MovieCard from "@/components/movies/MovieCard";
 import MovieFilters from "@/components/movies/MovieFilters";
 import MoviesGrid from "@/components/movies/MoviesGrid";
 
