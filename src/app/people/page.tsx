@@ -1,5 +1,4 @@
 "use client";
-import PageButtons from "@/components/PageButtons";
 import PeopleGrid from "@/components/people/PeopleGrid";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";

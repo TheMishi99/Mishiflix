@@ -3,7 +3,6 @@ import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useSeason from "@/hooks/seasons/useSeason";
-import useSeries from "@/hooks/series/useSeries";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
