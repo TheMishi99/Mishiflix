@@ -6,7 +6,7 @@ import {
   usersLogout,
   usersSignUp,
 } from "@/services/users.services";
-import { User } from "@/types/my-types";
+import { User } from "@/types/user-types";
 import { createContext, useContext, useEffect, useState } from "react";
 
 // Creamos un contexto para el usuario logueado
@@ -30,8 +30,20 @@ const UserLoggedContext = createContext<{
     username: string;
     password: string;
   }) => Promise<boolean>;
-  addFavoriteMovie: ({ movie_id }: { movie_id: number }) => Promise<boolean>;
-  addFavoriteSeries: ({ series_id }: { series_id: number }) => Promise<boolean>;
+  addFavoriteMovie: ({
+    movie_id,
+    movie_title,
+  }: {
+    movie_id: number;
+    movie_title: string;
+  }) => Promise<boolean>;
+  addFavoriteSeries: ({
+    series_id,
+    series_title,
+  }: {
+    series_id: number;
+    series_title: string;
+  }) => Promise<boolean>;
   logout: () => Promise<boolean>;
 }>({
   userLogged: null,
@@ -132,13 +144,22 @@ export const UserLoggedProvider = ({
   };
 
   // Funcion para añadir pelicula favorita
-  const addFavoriteMovie = async ({ movie_id }: { movie_id: number }) => {
+  const addFavoriteMovie = async ({
+    movie_id,
+    movie_title,
+  }: {
+    movie_id: number;
+    movie_title: string;
+  }) => {
     // Indicamos que estamos cargando
     setLoading(true);
     setError(null);
 
     // Llamamos a la función de añadir pelicula favorita de usuarios
-    const [error, newUser] = await usersAddFavoriteMovie({ movie_id });
+    const [error, newUser] = await usersAddFavoriteMovie({
+      movie_id,
+      movie_title,
+    });
 
     // Si hay un error, lo guardamos en el estado de error y dejamos de cargar
     if (error) {
@@ -156,13 +177,22 @@ export const UserLoggedProvider = ({
   };
 
   // Funcion para añadir serie favorita
-  const addFavoriteSeries = async ({ series_id }: { series_id: number }) => {
+  const addFavoriteSeries = async ({
+    series_id,
+    series_title,
+  }: {
+    series_id: number;
+    series_title: string;
+  }) => {
     // Indicamos que estamos cargando
     setLoading(true);
     setError(null);
 
     // Llamamos a la función de añadir pelicula favorita de usuarios
-    const [error, newUser] = await usersAddFavoriteSeries({ series_id });
+    const [error, newUser] = await usersAddFavoriteSeries({
+      series_id,
+      series_title,
+    });
 
     // Si hay un error, lo guardamos en el estado de error y dejamos de cargar
     if (error) {

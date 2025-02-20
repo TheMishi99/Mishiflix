@@ -1,5 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import useGenres from "@/hooks/genres/useGenres";
+import useMovieGenres from "@/hooks/genres/useMovieGenres";
 import Spinner from "../Spinner";
 
 export default function MovieFilters({
@@ -32,7 +32,7 @@ export default function MovieFilters({
     genres,
     isLoading: genresLoading,
     isError: genresError,
-  } = useGenres({ language });
+  } = useMovieGenres({ language });
   return (
     <div
       id="filters"

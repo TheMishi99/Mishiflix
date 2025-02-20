@@ -1,12 +1,13 @@
 "use client";
-import PageButtons from "@/components/movies/PageButtons";
+import PageButtons from "@/components/PageButtons";
 import Spinner from "@/components/Spinner";
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
-import useMoviesFiltered from "@/hooks/movies/useMoviesFiltered";
+import useFilteredMovies from "@/hooks/movies/useFilteredMovies";
 import MovieCard from "@/components/movies/MovieCard";
 import MovieFilters from "@/components/movies/MovieFilters";
+import MoviesGrid from "@/components/movies/MoviesGrid";
 
 function FilteredMoviesPage() {
   const [page, setPage] = useState<number>(1);
@@ -35,7 +36,7 @@ function FilteredMoviesPage() {
     totalResults,
     isLoading: moviesLoading,
     isError: moviesError,
-  } = useMoviesFiltered({
+  } = useFilteredMovies({
     page,
     language,
     genres: selectedGenres,
@@ -99,16 +100,7 @@ function FilteredMoviesPage() {
                 : ""
             }order_by=${order_by}&order=${order}&`}
           >
-            <ul className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-2">
-              {movies.map((movie) => (
-                <li
-                  key={movie.id + movie.title}
-                  className="group overflow-hidden rounded-xl group bg-gray-800 relative"
-                >
-                  <MovieCard movie={movie} />
-                </li>
-              ))}
-            </ul>
+            <MoviesGrid movies={movies} />
           </PageButtons>
         </>
       )}

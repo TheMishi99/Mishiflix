@@ -1,4 +1,4 @@
-import { User } from "@/types/my-types"; // importamos el tipo User
+import { User } from "@/types/user-types"; // importamos el tipo User
 import bcryptjs from "bcryptjs"; // npm install bcryptjs (libreria para encriptar contraseñas)
 
 export async function usersSignUp({
@@ -90,8 +90,10 @@ export async function usersLogin({
 
 export async function usersAddFavoriteMovie({
   movie_id,
+  movie_title,
 }: {
   movie_id: number;
+  movie_title: string;
 }): Promise<[string | null, User | null]> {
   try {
     const userLogged = JSON.parse(
@@ -99,12 +101,14 @@ export async function usersAddFavoriteMovie({
     ) as User | null;
     if (!userLogged) throw new Error("User not found");
     let newUser = { ...userLogged };
-    if (userLogged.favoriteMovies.includes(movie_id)) {
+    if (
+      userLogged.favoriteMovies.map((favMov) => favMov.id).includes(movie_id)
+    ) {
       newUser.favoriteMovies = userLogged.favoriteMovies.filter(
-        (movie) => movie !== movie_id
+        (movie) => movie.id !== movie_id
       );
     } else {
-      newUser.favoriteMovies.push(movie_id);
+      newUser.favoriteMovies.push({ id: movie_id, title: movie_title });
     }
     window.sessionStorage.setItem("userLogged", JSON.stringify(newUser));
     let localUsers = JSON.parse(
@@ -126,8 +130,10 @@ export async function usersAddFavoriteMovie({
 
 export async function usersAddFavoriteSeries({
   series_id,
+  series_title,
 }: {
   series_id: number;
+  series_title: string;
 }): Promise<[string | null, User | null]> {
   try {
     const userLogged = JSON.parse(
@@ -135,12 +141,14 @@ export async function usersAddFavoriteSeries({
     ) as User | null;
     if (!userLogged) throw new Error("User not found");
     let newUser = { ...userLogged };
-    if (userLogged.favoriteSeries.includes(series_id)) {
+    if (
+      userLogged.favoriteSeries.map((favSer) => favSer.id).includes(series_id)
+    ) {
       newUser.favoriteSeries = newUser.favoriteSeries.filter(
-        (movie) => movie !== series_id
+        (series) => series.id !== series_id
       );
     } else {
-      newUser.favoriteSeries.push(series_id);
+      newUser.favoriteSeries.push({ id: series_id, title: series_title });
     }
     window.sessionStorage.setItem("userLogged", JSON.stringify(newUser));
     let localUsers = JSON.parse(

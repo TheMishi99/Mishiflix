@@ -1,4 +1,5 @@
-import { Movie } from "@/types/my-types";
+"use client";
+import { Movie } from "@/types/movie-types";
 import MovieCard from "./MovieCard";
 import { useRef } from "react";
 

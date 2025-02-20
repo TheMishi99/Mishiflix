@@ -1,6 +1,7 @@
 "use client";
 import MovieCard from "@/components/movies/MovieCard";
-import PageButtons from "@/components/movies/PageButtons";
+import MoviesGrid from "@/components/movies/MoviesGrid";
+import PageButtons from "@/components/PageButtons";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useNowPlayingMovies from "@/hooks/movies/useNowPlayingMovies";
@@ -37,16 +38,7 @@ function NowPlayingMoviesPage() {
             totalPages={totalPages}
             baseUrl="/movies/now-playing?"
           >
-            <ul className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-2">
-              {movies.map((movie) => (
-                <li
-                  key={movie.id + movie.title}
-                  className="group overflow-hidden rounded-xl group bg-gray-800 relative"
-                >
-                  <MovieCard movie={movie} />
-                </li>
-              ))}
-            </ul>
+            <MoviesGrid movies={movies} />
           </PageButtons>
         </>
       )}

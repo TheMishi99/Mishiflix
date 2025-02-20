@@ -1,6 +1,7 @@
+"use client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-export default function SearchBar() {
+export default function SearchBar({ submit_url }: { submit_url: string }) {
   // Obtenemos el lenguaje actual
   const { language } = useLanguage();
 
@@ -12,13 +13,13 @@ export default function SearchBar() {
   };
   return (
     <form
-      action="/movies/search"
-      className="w-full flex justify-center items-center p-2 gap-2"
+      action={submit_url}
+      className="w-full max-w-[400px] flex justify-center items-center p-2 gap-2"
     >
       <input
         type="search"
-        name="title"
-        id="title"
+        name="term"
+        id="term"
         className="w-full p-2 rounded-xl bg-zinc-800"
       />
       <button className="p-2 bg-red-600 rounded-xl">

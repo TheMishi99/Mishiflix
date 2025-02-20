@@ -1,8 +1,9 @@
-import { getGenres } from "@/services/genres.services";
-import { Genre } from "@/types/my-types";
+"use client";
+import { getSeriesGenres } from "@/services/genres.services";
+import { Genre } from "@/types/media-types";
 import { useEffect, useState } from "react";
 
-export default function useGenres({ language }: { language: string }): {
+export default function useSeriesGenres({ language }: { language: string }): {
   genres: Genre[];
   isError: string | null;
   isLoading: boolean;
@@ -14,7 +15,7 @@ export default function useGenres({ language }: { language: string }): {
     const fetchGenres = async () => {
       try {
         // Obtenemos los géneros
-        const [error, data] = await getGenres({ language });
+        const [error, data] = await getSeriesGenres({ language });
 
         // Si hay un error, lanzamos una excepción
         if (error) throw new Error(error);

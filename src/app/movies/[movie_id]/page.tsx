@@ -5,7 +5,7 @@ import { useUserLogged } from "@/contexts/UserLoggedContext";
 import useMovie from "@/hooks/movies/useMovie";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import Image from "next/image";
+import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
 
 export default function MovieDetailsPage() {
   const { userLogged, addFavoriteMovie } = useUserLogged();
@@ -51,10 +51,15 @@ export default function MovieDetailsPage() {
 
   const handleAddToFavoriteButtonClick = async ({
     movie_id,
+    movie_title,
   }: {
     movie_id: number;
+    movie_title: string;
   }) => {
-    const addFavoriteMovieSuccess = await addFavoriteMovie({ movie_id });
+    const addFavoriteMovieSuccess = await addFavoriteMovie({
+      movie_id,
+      movie_title,
+    });
     alert(
       addFavoriteMovieSuccess
         ? "Pelicula añadida a favoritos con exito"
@@ -76,32 +81,26 @@ export default function MovieDetailsPage() {
         <p>{isError}</p>
       ) : (
         movie && (
-          <div
-            id="movie-info"
-            className="flex flex-col sm:flex-row justify-center items-center sm:items-start p-2 gap-2"
-          >
-            <div
-              id="movie-info-1"
-              className="flex flex-col justify-center items-center p-2 gap-2"
-            >
-              <Image
-                src={
-                  "https://media.themoviedb.org/t/p/w220_and_h330_face" +
-                  movie.poster_path
-                }
+          <div className="flex flex-col sm:flex-row justify-center items-center sm:items-start p-2 gap-2">
+            <div className="flex flex-col justify-center items-center p-2 gap-2">
+              <img
+                src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + movie.poster_path}
                 alt={movie.title}
-                width={20}
-                height={20}
               />
               <h3 className="text-xl">{movie.title}</h3>
               <button
                 className="flex justify-center items-center p-2 gap-2"
                 onClick={() =>
-                  handleAddToFavoriteButtonClick({ movie_id: movie.id })
+                  handleAddToFavoriteButtonClick({
+                    movie_id: movie.id,
+                    movie_title: movie.title,
+                  })
                 }
               >
                 <div className="size-14 rounded-full flex justify-center items-center p-2 gap-2 bg-zinc-800">
-                  {userLogged?.favoriteMovies.includes(movie.id) ? (
+                  {userLogged?.favoriteMovies
+                    .map((favMov) => favMov.id)
+                    .includes(movie.id) ? (
                     <span className="text-red-600 text-4xl">❤</span>
                   ) : (
                     <span className="text-white text-4xl">❤</span>
@@ -115,10 +114,7 @@ export default function MovieDetailsPage() {
                 </span>
               </button>
             </div>
-            <div
-              id="movie-info-2"
-              className="sm:w-2/3 flex flex-col justify-center items-start p-2 gap-2"
-            >
+            <div className="sm:w-2/3 flex flex-col justify-center items-start p-2 gap-2">
               <p>
                 <strong>
                   {

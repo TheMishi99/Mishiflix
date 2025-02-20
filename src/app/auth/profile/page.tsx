@@ -1,6 +1,7 @@
 "use client";
 import { useUserLogged } from "@/contexts/UserLoggedContext";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProfilePage() {
   const { userLogged, logout } = useUserLogged();
@@ -39,8 +40,56 @@ export default function ProfilePage() {
           </button>
 
           <div>
-            <h3>Favorite Movies</h3>
-            <ul>{userLogged.favoriteMovies.join(", ")}</ul>
+            {userLogged.favoriteMovies.length > 0 && (
+              <>
+                <h3>Favorite Movies</h3>
+                <ul>
+                  {userLogged.favoriteMovies.reduce<React.ReactNode[]>(
+                    (acc, favMov, index) => {
+                      acc.push(
+                        <Link
+                          key={favMov.id + favMov.title}
+                          href={`/movies/${favMov.id}`}
+                          className="text-red-600"
+                        >
+                          {favMov.title}
+                        </Link>
+                      );
+                      if (index < userLogged.favoriteMovies.length - 1) {
+                        acc.push(", ");
+                      }
+                      return acc;
+                    },
+                    []
+                  )}
+                </ul>
+              </>
+            )}
+            {userLogged.favoriteSeries.length > 0 && (
+              <>
+                <h3>Favorite Series</h3>
+                <ul>
+                  {userLogged.favoriteSeries.reduce<React.ReactNode[]>(
+                    (acc, favSer, index) => {
+                      acc.push(
+                        <Link
+                          key={favSer.id + favSer.title}
+                          href={`/series/${favSer.id}`}
+                          className="text-red-600"
+                        >
+                          {favSer.title}
+                        </Link>
+                      );
+                      if (index < userLogged.favoriteSeries.length - 1) {
+                        acc.push(", ");
+                      }
+                      return acc;
+                    },
+                    []
+                  )}
+                </ul>
+              </>
+            )}
           </div>
         </div>
       )}
