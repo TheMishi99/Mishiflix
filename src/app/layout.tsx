@@ -5,7 +5,7 @@ import Header from "@/components/partials/Header";
 import Image from "next/image";
 import Link from "next/link";
 import TMDB_Logo from "../../public/tmdb.svg";
-import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import { UserLoggedProvider } from "@/contexts/UserLoggedContext";
 import MainNavBar from "@/components/MainNavBar";
 

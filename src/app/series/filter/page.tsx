@@ -4,7 +4,6 @@ import Spinner from "@/components/Spinner";
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MovieFilters from "@/components/movies/MovieFilters";
 import useFilteredSeries from "@/hooks/series/useFilteredSeries";
 import SeriesGrid from "@/components/series/SeriesGrid";
 import SeriesFilters from "@/components/series/SeriesFilters";
