@@ -20,7 +20,7 @@ export default function SeriesDetailsSeasonDetailsEpisodesPage() {
   });
 
   return (
-    <div className="h-dvh flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll">
+    <div className="flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll">
       {seasonLoading ? (
         <Spinner />
       ) : seasonError ? (

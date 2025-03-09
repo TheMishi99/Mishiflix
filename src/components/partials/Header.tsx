@@ -5,6 +5,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import NavBar from "../NavBar";
 import { NavBarItem } from "@/types/other-types";
 import Link from "next/link";
+import Image from "next/image";
+import TMDB_Logo from "../../../public/tmdb.svg";
 
 export default function Header() {
   const { userLogged } = useUserLogged();
@@ -66,8 +68,16 @@ export default function Header() {
         >
           <h1 className="text-3xl">MISHIFLIX</h1>
         </Link>
+        <div
+          id="sponsor"
+          className="size-12 flex justify-center items-center bg-white rounded-xl"
+        >
+          <Link href="https://www.themoviedb.org" className="flex p-1">
+            <Image src={TMDB_Logo} alt={"TMDB Logo"} />
+          </Link>
+        </div>
       </div>
-      <div className="flex justify-end items-center p-2 gap-2">
+      <div className="flex flex-col sm:flex-row justify-end items-center p-2 gap-2">
         <LanguageSelector />
         <NavBar navBarItems={navBarItems} />
       </div>
