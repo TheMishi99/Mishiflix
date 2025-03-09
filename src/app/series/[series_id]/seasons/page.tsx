@@ -17,7 +17,7 @@ export default function SeriesDetailsSeasonsPage() {
   } = useSeries({ series_id: Number(series_id), language });
 
   return (
-    <div className="h-dvh flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll">
+    <div className="flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll">
       {serieLoading ? (
         <Spinner />
       ) : serieError ? (

@@ -13,6 +13,7 @@ export default function PersonDetailsPage() {
     isLoading: personLoading,
     isError: personError,
   } = usePerson({ person_id: Number(person_id), language });
+
   return (
     <div className="flex justify-center items-center p-2 gap-2">
       {personLoading ? (
@@ -21,13 +22,13 @@ export default function PersonDetailsPage() {
         <p>{personError}</p>
       ) : (
         person && (
-          <>
+          <div className="flex flex-col sm:flex-row justify-center items-center sm:items-start p-2 gap-2">
             <div className="w-full flex flex-col justify-center items-center p-2 gap-2">
               <img
                 src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + person.profile_path}
                 alt={person.name}
               />
-              <p>{person.name}</p>
+              <h3 className="text-xl">{person.name}</h3>
             </div>
             <div className="flex flex-col justify-center items-start p-2 gap-2">
               <p>
@@ -47,7 +48,7 @@ export default function PersonDetailsPage() {
                 {person.also_known_as.join(", ")}
               </p>
             </div>
-          </>
+          </div>
         )
       )}
     </div>

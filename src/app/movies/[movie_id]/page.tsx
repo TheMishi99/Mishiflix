@@ -6,6 +6,37 @@ import useMovie from "@/hooks/movies/useMovie";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
+import AddToFavoriteButton from "@/components/AddToFavoriteButton";
+
+const titleByLanguage = {
+  "en-US": {
+    mainTitle: "Movie Details",
+    budget: { title: "Budget", currency: "USD" },
+    overview: "Overview",
+    genres: "Genres",
+    popularity: "Popularity",
+    release_date: "Release Date",
+    homepage: "Homepage",
+  },
+  "es-AR": {
+    mainTitle: "Detalles de la Película",
+    budget: { title: "Presupuesto", currency: "ARS" },
+    overview: "Resumen",
+    genres: "Géneros",
+    popularity: "Popularidad",
+    release_date: "Fecha de lanzamiento",
+    homepage: "Pagina principal",
+  },
+  "fr-FR": {
+    mainTitle: "Détails du Film",
+    budget: { title: "Budget", currency: "EUR" },
+    overview: "Aperçu",
+    genres: "Genres",
+    popularity: "Popularité",
+    release_date: "Date de sortie",
+    homepage: "Page d'accueil",
+  },
+};
 
 export default function MovieDetailsPage() {
   const { userLogged, addFavoriteMovie } = useUserLogged();
@@ -15,39 +46,6 @@ export default function MovieDetailsPage() {
     movie_id: Number(movie_id),
     language,
   });
-
-  const titleByLanguage = {
-    "en-US": {
-      mainTitle: "Movie Details",
-      addFavorites: "Add to favorites",
-      budget: { title: "Budget", currency: "USD" },
-      overview: "Overview",
-      genres: "Genres",
-      popularity: "Popularity",
-      release_date: "Release Date",
-      homepage: "Homepage",
-    },
-    "es-AR": {
-      mainTitle: "Detalles de la Película",
-      addFavorites: "Añadir a favoritos",
-      budget: { title: "Presupuesto", currency: "ARS" },
-      overview: "Resumen",
-      genres: "Géneros",
-      popularity: "Popularidad",
-      release_date: "Fecha de lanzamiento",
-      homepage: "Pagina principal",
-    },
-    "fr-FR": {
-      mainTitle: "Détails du Film",
-      addFavorites: "Ajouter aux favoris",
-      budget: { title: "Budget", currency: "EUR" },
-      overview: "Aperçu",
-      genres: "Genres",
-      popularity: "Popularité",
-      release_date: "Date de sortie",
-      homepage: "Page d'accueil",
-    },
-  };
 
   const handleAddToFavoriteButtonClick = async ({
     movie_id,
@@ -70,7 +68,7 @@ export default function MovieDetailsPage() {
   return (
     <div
       id="movie-details"
-      className="h-dvh flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll"
+      className="flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll"
     >
       <h2 className="text-2xl">
         {titleByLanguage[language as keyof typeof titleByLanguage].mainTitle}
@@ -88,31 +86,20 @@ export default function MovieDetailsPage() {
                 alt={movie.title}
               />
               <h3 className="text-xl">{movie.title}</h3>
-              <button
-                className="flex justify-center items-center p-2 gap-2"
-                onClick={() =>
-                  handleAddToFavoriteButtonClick({
-                    movie_id: movie.id,
-                    movie_title: movie.title,
-                  })
-                }
-              >
-                <div className="size-14 rounded-full flex justify-center items-center p-2 gap-2 bg-zinc-800">
-                  {userLogged?.favoriteMovies
-                    .map((favMov) => favMov.id)
-                    .includes(movie.id) ? (
-                    <span className="text-red-600 text-4xl">❤</span>
-                  ) : (
-                    <span className="text-white text-4xl">❤</span>
-                  )}
-                </div>
-                <span className="">
-                  {
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .addFavorites
+              {userLogged && (
+                <AddToFavoriteButton
+                  onClick={() =>
+                    handleAddToFavoriteButtonClick({
+                      movie_id: movie.id,
+                      movie_title: movie.title,
+                    })
                   }
-                </span>
-              </button>
+                  included={userLogged.favoriteMovies
+                    .map((favMov) => favMov.id)
+                    .includes(movie.id)}
+                  language={language}
+                />
+              )}
             </div>
             <div className="sm:w-2/3 flex flex-col justify-center items-start p-2 gap-2">
               <p>

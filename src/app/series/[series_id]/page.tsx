@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import useSeries from "@/hooks/series/useSeries";
 import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
+import AddToFavoriteButton from "@/components/AddToFavoriteButton";
 
 export default function SerieDetailsPage() {
   const { userLogged, addFavoriteSeries: addFavoriteSerie } = useUserLogged();
@@ -23,7 +24,6 @@ export default function SerieDetailsPage() {
   const titleByLanguage = {
     "en-US": {
       mainTitle: "Movie Details",
-      addFavorites: "Add to favorites",
       overview: "Overview",
       genres: "Genres",
       popularity: "Popularity",
@@ -34,7 +34,6 @@ export default function SerieDetailsPage() {
     },
     "es-AR": {
       mainTitle: "Detalles de la Película",
-      addFavorites: "Añadir a favoritos",
       overview: "Resumen",
       genres: "Géneros",
       popularity: "Popularidad",
@@ -45,7 +44,6 @@ export default function SerieDetailsPage() {
     },
     "fr-FR": {
       mainTitle: "Détails du Film",
-      addFavorites: "Ajouter aux favoris",
       overview: "Aperçu",
       genres: "Genres",
       popularity: "Popularité",
@@ -77,7 +75,7 @@ export default function SerieDetailsPage() {
   return (
     <div
       id="serie-details"
-      className="h-dvh flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll"
+      className="flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll"
     >
       <h2 className="text-2xl">
         {titleByLanguage[language as keyof typeof titleByLanguage].mainTitle}
@@ -95,31 +93,20 @@ export default function SerieDetailsPage() {
                 alt={series.name}
               />
               <h3 className="text-xl">{series.name}</h3>
-              <button
-                className="flex justify-center items-center p-2 gap-2"
-                onClick={() =>
-                  handleAddToFavoriteButtonClick({
-                    series_id: series.id,
-                    series_title: series.name,
-                  })
-                }
-              >
-                <div className="size-14 rounded-full flex justify-center items-center p-2 gap-2 bg-zinc-800">
-                  {userLogged?.favoriteMovies
-                    .map((favMov) => favMov.id)
-                    .includes(series.id) ? (
-                    <span className="text-red-600 text-4xl">❤</span>
-                  ) : (
-                    <span className="text-white text-4xl">❤</span>
-                  )}
-                </div>
-                <span className="">
-                  {
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .addFavorites
+              {userLogged && (
+                <AddToFavoriteButton
+                  onClick={() =>
+                    handleAddToFavoriteButtonClick({
+                      series_id: series.id,
+                      series_title: series.name,
+                    })
                   }
-                </span>
-              </button>
+                  included={userLogged.favoriteSeries
+                    .map((favSer) => favSer.id)
+                    .includes(series.id)}
+                  language={language}
+                />
+              )}
             </div>
             <div className="sm:w-2/3 flex flex-col justify-center items-start p-2 gap-2">
               <p>

@@ -18,7 +18,7 @@ export default function ProfilePage() {
   return (
     <div
       id="profile"
-      className="h-full flex flex-col justify-center items-center p-2 gap-2"
+      className="flex flex-col justify-center items-center p-2 gap-2"
     >
       <h2>Logged In as</h2>
       {userLogged && (
