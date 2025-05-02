@@ -19,42 +19,34 @@ export default function SerieDetailsSeasonDetailsPage() {
     season_number: Number(season_number),
     language,
   });
+  if (seasonLoading) return <Spinner />;
+  if (seasonError) return <p>{seasonError}</p>;
+  if (!season) return <p>Season not found</p>;
   return (
-    <div className="flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll">
-      {seasonLoading ? (
-        <Spinner />
-      ) : seasonError ? (
-        <p></p>
-      ) : (
-        season && (
-          <>
-            <div className="flex flex-col justify-center items-center p-2 gap-2">
-              <img
-                src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + season.poster_path}
-                alt={season.name}
-              />
-              <h2 className="text-2xl">{season.name}</h2>
-            </div>
-            <div className="flex flex-col justify-center items-center p-2 gap-2">
-              <p>
-                <strong>Air Date</strong>: {season.air_date}
-              </p>
-              <p>
-                <strong>Overview</strong>: {season.overview}
-              </p>
-              <p>
-                <strong>Vote Average</strong>: {season.vote_average}
-              </p>
-              <Link
-                href={`/series/${series_id}/seasons/${season_number}/episodes`}
-                className="bg-red-600 p-2 rounded-xl"
-              >
-                See Episodes
-              </Link>
-            </div>
-          </>
-        )
-      )}
+    <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+      <div className="flex justify-center items-center">
+        <img
+          src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + season.poster_path}
+          alt={season.name}
+        />
+      </div>
+      <div className="w-full sm:w-2/3 flex flex-col justify-center items-center p-2 gap-2">
+        <p className="w-full">
+          <strong>Air Date</strong>: {season.air_date}
+        </p>
+        <p className="w-full">
+          <strong>Overview</strong>: {season.overview}
+        </p>
+        <p className="w-full">
+          <strong>Vote Average</strong>: {season.vote_average}
+        </p>
+        <Link
+          href={`/series/${series_id}/seasons/${season_number}/episodes`}
+          className="bg-red-600 p-2 rounded-xl"
+        >
+          See Episodes
+        </Link>
+      </div>
     </div>
   );
 }

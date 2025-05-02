@@ -1,5 +1,6 @@
 "use client";
-import { getPopularPeople } from "@/services/people.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse, ApiPeopleDTO } from "@/types/api-types";
 import { Person } from "@/types/people-types";
 import { useEffect, useState } from "react";
 
@@ -25,17 +26,34 @@ export default function usePopularPeople({
   const [actualPage, setActualPage] = useState<number>(0);
   useEffect(() => {
     const fetchPopularPeople = async () => {
-      const [error, data] = await getPopularPeople({ language, page });
-      if (error) setIsError(error);
-      if (data) {
+      try {
+        const url = `https://api.themoviedb.org/3/person/popular?language=${language}&page=${page}`;
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+          },
+        };
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          const errorResponse: ErrorResponse = await response.json();
+          throw new Error(errorResponse.status_message);
+        }
+        const data: ApiPeopleDTO = await response.json();
         setPeople(data.results);
         setActualPage(data.page);
         setTotalPages(data.total_pages);
         setTotalResults(data.total_results);
+      } catch (error) {
+        if (error instanceof Error) setIsError(error.message);
+        else setIsError("Something went wrong");
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
     fetchPopularPeople();
   }, [language, page]);
+
   return { people, isLoading, isError, totalPages, totalResults, actualPage };
 }

@@ -5,7 +5,7 @@ import useMovies from "@/hooks/movies/useMovies";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MoviesGrid from "@/components/movies/MoviesGrid";
+import MediasGrid from "@/components/medias/MediasGrid";
 
 function SearchMoviesPage() {
   const [term, setTerm] = useState<string | null>(null);
@@ -50,7 +50,7 @@ function SearchMoviesPage() {
   };
 
   return (
-    <div className="flex flex-col justify-start items-center p-2 overflow-y-scroll">
+    <div className="flex flex-col justify-start items-center p-2">
       <h2>
         {titlesByLanguage[language as keyof typeof titlesByLanguage].title}
       </h2>
@@ -76,7 +76,17 @@ function SearchMoviesPage() {
             totalPages={totalPages}
             baseUrl={`/movies/search?term=${term}&`}
           >
-            <MoviesGrid movies={movies} />
+            <MediasGrid
+              medias={movies.map((m) => {
+                return {
+                  id: m.id,
+                  image: m.poster_path,
+                  url: `/movies/${m.id}`,
+                  title: m.title,
+                  overview: m.overview,
+                };
+              })}
+            />
           </PageButtons>
         </>
       )}

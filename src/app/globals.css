@@ -3,27 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Tamaño general de la barra */
 ::-webkit-scrollbar {
-  width: 10px; /* Para barras verticales */
-  height: 10px; /* Para barras horizontales */
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-thumb {

@@ -2,6 +2,7 @@ import { Genre } from "./media-types";
 import { Movie } from "./movie-types";
 import { Person } from "./people-types";
 import { Series } from "./series-types";
+import { User } from "./user-types";
 
 export type ErrorResponse = {
   success: boolean;
@@ -38,3 +39,7 @@ export type ApiPeopleDTO = {
   total_pages: number;
   total_results: number;
 };
+
+export type LoginDTO = Pick<User, "username" | "password">;
+
+export type SignUpDTO = Omit<User, "id" | "favoriteMovies" | "favoriteSeries">;

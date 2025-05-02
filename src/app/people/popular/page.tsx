@@ -1,11 +1,11 @@
 "use client";
+import MediasGrid from "@/components/medias/MediasGrid";
 import PageButtons from "@/components/PageButtons";
-import PeopleGrid from "@/components/people/PeopleGrid";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import usePopularPeople from "@/hooks/people/usePopularPeople";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function PopularPeoplePage() {
   const { language } = useLanguage();
@@ -35,7 +35,19 @@ function PopularPeoplePage() {
           actualPage={actualPage}
           baseUrl="/people/popular?"
         >
-          <PeopleGrid peopleList={people} />
+          <MediasGrid
+            medias={people.map((p) => {
+              return {
+                id: p.id,
+                image: p.profile_path,
+                url: `/people/${p.id}`,
+                title: p.name,
+                overview: p.known_for
+                  .map((kf) => (kf.name ? kf.name : kf.title ? kf.title : null))
+                  .join(", "),
+              };
+            })}
+          />
         </PageButtons>
       )}
     </div>
@@ -43,9 +55,5 @@ function PopularPeoplePage() {
 }
 
 export default function PopularPeopleMainPage() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <PopularPeoplePage />
-    </Suspense>
-  );
+  return <PopularPeoplePage />;
 }

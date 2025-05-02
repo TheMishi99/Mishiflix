@@ -1,5 +1,6 @@
 "use client";
-import { getFilteredSeriesList } from "@/services/series.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse, ApiSeriesResponseDTO } from "@/types/api-types";
 import { Series } from "@/types/series-types";
 import { useEffect, useState } from "react";
 
@@ -7,13 +8,13 @@ export default function useFilteredSeries({
   page,
   language,
   genres,
-  order_by,
+  sortBy,
   order,
 }: {
   page: number;
   language: string;
   genres: number[];
-  order_by: string;
+  sortBy: string;
   order: string;
 }): {
   actualPage: number;
@@ -33,25 +34,33 @@ export default function useFilteredSeries({
   useEffect(() => {
     const fetchFilteredSeries = async () => {
       try {
-        // Obtenemos las películas filtradas
-        const [error, data] = await getFilteredSeriesList({
-          genres,
-          page,
-          language,
-          order_by,
-          order,
-        });
+        // Preparamos la URL y las opciones de la petición
+        const url = `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=${language}&page=${page}&sort_by=${sortBy}.${order}&with_genres=${genres.join(
+          "%2C"
+        )}`;
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+          },
+        };
 
-        // Si hay un error, lanzamos una excepción
-        if (error) throw new Error(error);
+        // Realizamos la petición
+        const response = await fetch(url, options);
 
-        // Si hay datos, los guardamos
-        if (data) {
-          setSeries(data.results);
-          setTotalResults(data.total_results);
-          setActualPage(data.page);
-          setTotalPages(data.total_pages);
+        // Si la petición no fue exitosa, lanzamos un error
+        if (!response.ok) {
+          const errorData: ErrorResponse = await response.json();
+          throw new Error(errorData.status_message);
         }
+
+        // Si la petición fue exitosa, obtenemos los datos y los retornamos
+        const data: ApiSeriesResponseDTO = await response.json();
+        setSeries(data.results);
+        setTotalResults(data.total_results);
+        setActualPage(data.page);
+        setTotalPages(data.total_pages);
       } catch (error) {
         if (error instanceof Error) setIsError(error.message);
         else setIsError("Something went wrong");
@@ -60,7 +69,7 @@ export default function useFilteredSeries({
       }
     };
     fetchFilteredSeries();
-  }, [page, language, genres, order_by, order]);
+  }, [page, language, genres, sortBy, order]);
 
   // Devolvemos los datos
   return {

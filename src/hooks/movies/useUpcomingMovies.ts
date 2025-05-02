@@ -1,5 +1,6 @@
 "use client";
-import { getUpcomingMovies } from "@/services/movies.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse, ApiMoviesResponseDTO } from "@/types/api-types";
 import { Movie } from "@/types/movie-types";
 import { useEffect, useState } from "react";
 
@@ -27,19 +28,31 @@ export default function useUpcomingMovies({
   useEffect(() => {
     const getMovies = async () => {
       try {
-        // Obtener las películas próximas a estrenarse
-        const [error, data] = await getUpcomingMovies({ page, language });
+        // Preparamos la URL y las opciones de la petición
+        const url = `https://api.themoviedb.org/3/movie/popular?language=${language}&page=${page}`;
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+          },
+        };
 
-        // Si hay un error, lanzar una excepción
-        if (error) throw new Error(error);
+        // Realizamos la petición
+        const response = await fetch(url, options);
 
-        // Si hay datos, actualizar el estado de las películas
-        if (data) {
-          setMovies(data.results);
-          setTotalResults(data.total_results);
-          setActualPage(data.page);
-          setTotalPages(data.total_pages);
+        // Si la petición no fue exitosa, lanzamos un error
+        if (!response.ok) {
+          const errorData: ErrorResponse = await response.json();
+          throw new Error(errorData.status_message);
         }
+
+        // Si la petición fue exitosa, obtenemos los datos y los
+        const data: ApiMoviesResponseDTO = await response.json();
+        setMovies(data.results);
+        setTotalResults(data.total_results);
+        setActualPage(data.page);
+        setTotalPages(data.total_pages);
       } catch (error) {
         if (error instanceof Error) setIsError(error.message);
         else setIsError("Something went wrong");

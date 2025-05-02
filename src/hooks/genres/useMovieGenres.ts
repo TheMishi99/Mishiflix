@@ -1,5 +1,6 @@
 "use client";
-import { getMovieGenres } from "@/services/genres.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse, GenresDTO } from "@/types/api-types";
 import { Genre } from "@/types/media-types";
 import { useEffect, useState } from "react";
 
@@ -14,14 +15,28 @@ export default function useMovieGenres({ language }: { language: string }): {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        // Obtenemos los géneros
-        const [error, data] = await getMovieGenres({ language });
-
-        // Si hay un error, lanzamos una excepción
-        if (error) throw new Error(error);
-
-        // Si hay datos, los guardamos en el estado
-        if (data) setGenres(data.genres);
+        // Preparamos la URL y las opciones para la petición
+            const url = `https://api.themoviedb.org/3/genre/movie/list?language=${language}`;
+            const options = {
+              method: "GET",
+              headers: {
+                accept: "application/json",
+                Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+              },
+            };
+        
+            // Realizamos la petición
+            const response = await fetch(url, options);
+        
+            // Si la respuesta no es correcta, lanzamos un error
+            if (!response.ok) {
+              const errorData: ErrorResponse = await response.json();
+              throw new Error(errorData.status_message);
+            }
+        
+            // Si todo ha ido bien, devolvemos los datos
+            const data: GenresDTO = await response.json();
+            setGenres(data.genres);
       } catch (error) {
         if (error instanceof Error) setIsError(error.message);
         else setIsError("Something went wrong");

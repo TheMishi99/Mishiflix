@@ -1,5 +1,6 @@
 "use client";
-import { getEpisodeDetails } from "@/services/episodes.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse } from "@/types/api-types";
 import { DetailedEpisode } from "@/types/episode-types";
 import { useEffect, useState } from "react";
 
@@ -24,15 +25,35 @@ export default function useEpisode({
 
   useEffect(() => {
     const fetchEpisodeDetails = async () => {
-      const [error, data] = await getEpisodeDetails({
-        series_id,
-        season_number,
-        episode_number,
-        language,
-      });
-      if (error) setIsError(error);
-      if (data) setEpisode(data);
-      setIsLoading(false);
+      try {
+        // Preparamos la URL y las opciones de la petición
+        const url = `https://api.themoviedb.org/3/tv/${series_id}/season/${season_number}/episode/${episode_number}?language=${language}`;
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+          },
+        };
+
+        // Realizamos la petición
+        const response = await fetch(url, options);
+
+        // Si la petición no fue exitosa, lanzamos un error
+        if (!response.ok) {
+          const errorData: ErrorResponse = await response.json();
+          throw new Error(errorData.status_message);
+        }
+
+        // Si la petición fue exitosa, obtenemos los datos y los retornamos
+        const data: DetailedEpisode = await response.json();
+        setEpisode(data);
+      } catch (error) {
+        if (error instanceof Error) setIsError(error.message);
+        else setIsError("Something went wrong");
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchEpisodeDetails();
   }, [series_id, season_number, episode_number, language]);

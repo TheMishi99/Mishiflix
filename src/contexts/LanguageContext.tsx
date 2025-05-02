@@ -1,12 +1,22 @@
 "use client";
-import { useState, useContext, createContext } from "react";
+import {
+  useState,
+  useContext,
+  createContext,
+  ReactNode,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 // Creamos un contexto para el idioma
 const LanguageContext = createContext<{
   language: string;
-  setLanguage: (language: string) => void;
+  loading: boolean;
+  setLanguage: Dispatch<SetStateAction<string>>;
 }>({
   language: "en-US",
+  loading: true,
   setLanguage: () => {},
 });
 
@@ -14,16 +24,21 @@ const LanguageContext = createContext<{
 export const LanguageProvider = ({
   children,
   defaultLanguage = "en-US",
-}: {
-  children: React.ReactNode;
+}: Readonly<{
+  children: ReactNode;
   defaultLanguage?: string;
-}) => {
+}>) => {
   // Usamos el estado para guardar el idioma
   const [language, setLanguage] = useState(defaultLanguage);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   // Retornamos el provider con el contexto y el estado
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
+    <LanguageContext.Provider value={{ language, loading, setLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

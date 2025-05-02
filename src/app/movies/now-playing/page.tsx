@@ -1,5 +1,5 @@
 "use client";
-import MoviesGrid from "@/components/movies/MoviesGrid";
+import MediasGrid from "@/components/medias/MediasGrid";
 import PageButtons from "@/components/PageButtons";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -24,7 +24,7 @@ function NowPlayingMoviesPage() {
     setPage(Number(params.get("page")) || 1);
   }, [params]);
   return (
-    <div className="flex flex-col justify-start items-center p-2 overflow-y-scroll">
+    <div className="flex flex-col justify-start items-center p-2">
       {isLoading ? (
         <Spinner />
       ) : isError ? (
@@ -37,7 +37,17 @@ function NowPlayingMoviesPage() {
             totalPages={totalPages}
             baseUrl="/movies/now-playing?"
           >
-            <MoviesGrid movies={movies} />
+            <MediasGrid
+              medias={movies.map((m) => {
+                return {
+                  id: m.id,
+                  url: `/movies/${m.id}`,
+                  image: m.poster_path,
+                  title: m.title,
+                  overview: m.overview,
+                };
+              })}
+            />
           </PageButtons>
         </>
       )}
