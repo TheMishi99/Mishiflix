@@ -2,8 +2,6 @@
 import Avatar from "@/components/ui/Avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import Link from "next/link";
-import { ReactNode } from "react";
 
 const titlesByLanguage = {
   "en-US": {
