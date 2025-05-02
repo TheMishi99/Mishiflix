@@ -27,6 +27,12 @@ Este proyecto es una aplicación web desarrollada con **Next.js** que imita la i
 - **Variables de entorno**:
   - **PUBLIC_NEXT_TMDB_API_KEY**: aqui necesitas tu API KEY personal
   - **PUBLIC_NEXT_TMDB_IMAGES_PREFIX**: aqui necesitas la url de prefijo para acceder a los posters de las peliculas y series.
+  - **JWT_SECRET**: Clave secreta para desencriptar tokens.
+  - **MONGODB_USER**: Nombre de usuario con permiso para acceder al cluster de mongodb.
+  - **MONGODB_PASSWORD**: Contraseña del usuario con permiso para acceder al cluster de mongodb.
+  - **MONGODB_CLUSTER**: Direccion del host del cluster de mongodb.
+  - **MONGODB_DB**: Nombre de la base de datos dentro del cluster de mongodb.
+  - **MONGODB_APP_NAME**: Nombre de la aplicacion que accedera a la base de datos.
 
 ### **Instrucciones**
 
@@ -62,10 +68,9 @@ Este proyecto es una aplicación web desarrollada con **Next.js** que imita la i
 ## **Estructura del Proyecto**
 
 - `/app` - Páginas principales de la aplicación.
-- `/components` - Componentes reutilizables como tarjetas de películas, botones, formularios, etc.
+- `/components` - Componentes reutilizables como sliders, botones, formularios, etc.
 - `/contexts` - Componentes contextuales de la aplicacion.
 - `/hooks` - Hooks para el manejo de logica intermedia de solicitudes a la API.
-- `/services` - Funciones principales para el manejo de logica de solicitudes a la API
 - `/utils` - Utilidades y funciones auxiliares.
 - `/types` - Objetos tipados para un correcto manejo de los datos.
 
@@ -75,8 +80,8 @@ Este proyecto es una aplicación web desarrollada con **Next.js** que imita la i
 
 - **Next.js**: Framework de React para renderizado del lado del servidor.
 - **Tailwind CSS**: Para estilizar la interfaz de usuario.
-- **LocalStorage**: Para almacenar datos de registro de usuario.
-- **SessionStorage**: Para manejar sesiones de usuario logueado.
+- **MongoDB**: Para almacenar los usuarios.
+- **Cookies**: Para manejar sesiones.
 
 ---
 
