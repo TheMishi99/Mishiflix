@@ -1,26 +1,9 @@
 "use client";
 import Avatar from "@/components/ui/Avatar";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
-
-const titlesByLanguage = {
-  "en-US": {
-    favoriteMovies: "Favorite Movies",
-    favoriteSeries: "Favorite Series",
-  },
-  "es-AR": {
-    favoriteMovies: "Peliculas Favoritas",
-    favoriteSeries: "Series Favoritas",
-  },
-  "fr-FR": {
-    favoriteMovies: "Films Favoris",
-    favoriteSeries: "Séries Favoris",
-  },
-};
 
 export default function ProfilePage() {
   const { userLogged } = useAuth();
-  const { language } = useLanguage();
 
   return (
     <div
