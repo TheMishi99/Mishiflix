@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import useSeries from "@/hooks/series/useSeries";
 import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
+import Image from "next/image";
 
 const titleByLanguage = {
   "en-US": {
@@ -55,9 +56,12 @@ export default function SerieDetailsPage() {
   return (
     <div className="w-full flex flex-col sm:flex-row justify-center items-center p-2 gap-2">
       <div className="flex flex-col justify-center items-center p-2 gap-2">
-        <img
+        <Image
           src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + series.poster_path}
           alt={series.name}
+          width={100000}
+          height={100000}
+          className="w-48 aspect-[2/3]"
         />
       </div>
       <div className="w-full sm:w-2/3 flex flex-col justify-center items-center p-2 gap-2">

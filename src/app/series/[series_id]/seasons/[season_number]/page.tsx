@@ -4,6 +4,7 @@ import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useSeason from "@/hooks/seasons/useSeason";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -25,9 +26,12 @@ export default function SerieDetailsSeasonDetailsPage() {
   return (
     <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
       <div className="flex justify-center items-center">
-        <img
+        <Image
           src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + season.poster_path}
           alt={season.name}
+          width={100000}
+          height={100000}
+          className="w-48 aspect-[2/3]"
         />
       </div>
       <div className="w-full sm:w-2/3 flex flex-col justify-center items-center p-2 gap-2">

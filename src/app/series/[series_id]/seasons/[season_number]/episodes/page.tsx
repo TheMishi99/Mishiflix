@@ -3,14 +3,13 @@ import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useSeason from "@/hooks/seasons/useSeason";
-import useSeries from "@/hooks/series/useSeries";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
 export default function SeriesDetailsSeasonDetailsEpisodesPage() {
   const { series_id, season_number } = useParams();
   const { language } = useLanguage();
-  const { series } = useSeries({ series_id: Number(series_id), language });
   const {
     season,
     isLoading: seasonLoading,
@@ -38,9 +37,12 @@ export default function SeriesDetailsSeasonDetailsEpisodesPage() {
               href={`/series/${series_id}/seasons/${season_number}/episodes/${episode.episode_number}`}
               className="flex flex-col justify-center items-center p-2 gap-2"
             >
-              <img
+              <Image
                 src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + episode.still_path}
                 alt={episode.id + episode.name}
+                width={100000}
+                height={100000}
+                className="w-48 aspect-[2/3]"
               />
               <p>
                 {episode.episode_number} - {episode.name}

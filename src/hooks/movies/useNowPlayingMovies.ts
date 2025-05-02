@@ -1,6 +1,5 @@
 "use client";
 import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
-import { getNowPlayingMovies } from "@/services/movies.services";
 import { ApiMoviesResponseDTO, ErrorResponse } from "@/types/api-types";
 import { Movie } from "@/types/movie-types";
 import { useEffect, useState } from "react";

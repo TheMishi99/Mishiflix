@@ -69,7 +69,7 @@ export default function PeoplePage() {
               return {
                 id: p.id,
                 image: p.profile_path,
-                url: `/movies/${p.id}`,
+                url: `/people/${p.id}`,
                 title: p.name,
                 overview:
                   "Known for: " + p.known_for.map((kf) => kf.title).join(", "),

@@ -1,15 +1,18 @@
 import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
 import { Media } from "@/types/other-types";
 import { delimitString } from "@/utils/functions";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function MediaCard({ media }: { media: Media }) {
   return (
     <div className="group relative flex flex-col justify-center items-center p-2 gap-2 bg-zinc-900 rounded-xl">
-      <img
+      <Image
         src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + media.image}
         alt={media.title}
-        className="object-cover"
+        width={225}
+        height={225}
+        className="aspect-[2/3] object-cover"
       />
       <Link
         href={media.url}

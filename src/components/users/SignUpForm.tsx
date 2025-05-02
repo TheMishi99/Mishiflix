@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Button from "../ui/Button";
@@ -69,10 +68,10 @@ export default function SignUpForm() {
 
   const { language } = useLanguage();
 
-  const handleSignUpSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUpSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const signUpSuccess = signUp({ avatar, username, password });
+    const signUpSuccess = await signUp({ avatar, username, password });
 
     if (signUpSuccess) {
       window.location.href = "/";
