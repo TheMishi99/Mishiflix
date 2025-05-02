@@ -1,16 +1,18 @@
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 export default function PageButtons({
   children,
   actualPage,
   totalPages,
   baseUrl,
-}: {
-  children: React.ReactNode;
+}: Readonly<{
+  children: ReactNode;
   actualPage: number;
   totalPages: number;
   baseUrl: string;
-}) {
+}>) {
   const nextPage = actualPage + 1;
   const prevPage = actualPage - 1;
   const buttons = (
@@ -20,10 +22,12 @@ export default function PageButtons({
           href={baseUrl + `page=${prevPage}`}
           className="p-2 rounded-xl bg-red-600"
         >
-          {"<-"}
+          <ArrowLeft color="white" />
         </Link>
       ) : (
-        <p className="p-2 rounded-xl bg-red-800">{"<-"}</p>
+        <p className="p-2 rounded-xl bg-red-800">
+          <ArrowLeft color="white" />
+        </p>
       )}
       <Link
         href={baseUrl + `page=${actualPage}`}
@@ -36,10 +40,12 @@ export default function PageButtons({
           href={baseUrl + `page=${nextPage}`}
           className="p-2 rounded-xl bg-red-600"
         >
-          {"->"}
+          <ArrowRight color="white" />
         </Link>
       ) : (
-        <p className="p-2 rounded-xl bg-red-800">{"->"}</p>
+        <p className="p-2 rounded-xl bg-red-800">
+          <ArrowRight color="white" />
+        </p>
       )}
     </div>
   );

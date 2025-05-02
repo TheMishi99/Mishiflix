@@ -1,5 +1,6 @@
 "use client";
-import { getAiringTodaySeriesList } from "@/services/series.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse, ApiSeriesResponseDTO } from "@/types/api-types";
 import { Series } from "@/types/series-types";
 import { useEffect, useState } from "react";
 
@@ -27,22 +28,31 @@ export default function useAiringTodaySeries({
   useEffect(() => {
     const getSeries = async () => {
       try {
-        // Obtenemos las películas populares
-        const [error, data] = await getAiringTodaySeriesList({
-          page,
-          language,
-        });
+        // Preparamos la URL y las opciones para la petición
+        const url = `https://api.themoviedb.org/3/tv/airing_today?language=${language}&page=${page}`;
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+          },
+        };
 
-        // Si hay un error, lanzamos una excepción
-        if (error) throw new Error(error);
+        // Realizamos la petición
+        const response = await fetch(url, options);
 
-        // Si hay datos, los guardamos en el estado
-        if (data) {
-          setSeries(data.results);
-          setTotalResults(data.total_results);
-          setActualPage(data.page);
-          setTotalPages(data.total_pages);
+        // Si la respuesta no es correcta, lanzamos un error
+        if (!response.ok) {
+          const errorData: ErrorResponse = await response.json();
+          throw new Error(errorData.status_message);
         }
+
+        // Si todo ha ido bien, devolvemos los datos
+        const data: ApiSeriesResponseDTO = await response.json();
+        setSeries(data.results);
+        setTotalResults(data.total_results);
+        setActualPage(data.page);
+        setTotalPages(data.total_pages);
       } catch (error) {
         if (error instanceof Error) setIsError(error.message);
         else setIsError("Something went wrong");

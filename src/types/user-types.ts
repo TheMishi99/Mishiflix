@@ -1,12 +1,8 @@
+import { ObjectId } from "mongoose";
+
 export type User = {
+  id: ObjectId;
   avatar: string;
   username: string;
   password: string;
-  favoriteMovies: favoriteMedia[];
-  favoriteSeries: favoriteMedia[];
-};
-
-type favoriteMedia = {
-  id: number;
-  title: string;
 };

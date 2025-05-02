@@ -1,5 +1,5 @@
 "use client";
-import MoviesGrid from "@/components/movies/MoviesGrid";
+import MediasGrid from "@/components/medias/MediasGrid";
 import PageButtons from "@/components/PageButtons";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -26,7 +26,7 @@ function TopRatedMoviesPage() {
   }, [params]);
 
   return (
-    <div className="flex flex-col justify-start items-center p-2 overflow-y-scroll">
+    <div className="flex flex-col justify-start items-center p-2">
       {isLoading ? (
         <Spinner />
       ) : isError ? (
@@ -39,7 +39,17 @@ function TopRatedMoviesPage() {
             totalPages={totalPages}
             baseUrl="/movies/popular?"
           >
-            <MoviesGrid movies={movies} />
+            <MediasGrid
+              medias={movies.map((m) => {
+                return {
+                  id: m.id,
+                  image: m.poster_path,
+                  url: `/movies/${m.id}`,
+                  title: m.title,
+                  overview: m.overview,
+                };
+              })}
+            />
           </PageButtons>
         </>
       )}

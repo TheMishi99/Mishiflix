@@ -1,5 +1,6 @@
 "use client";
-import { getMovieDetails } from "@/services/movies.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse } from "@/types/api-types";
 import { DetailedMovie } from "@/types/movie-types";
 import { useEffect, useState } from "react";
 
@@ -20,19 +21,28 @@ export default function useMovie({
   useEffect(() => {
     const getMovie = async () => {
       try {
-        // Obtenemos los datos de la película
-        const [error, data] = await getMovieDetails({
-          movie_id,
-          language,
-        });
+        // Preparamos la URL y las opciones de la petición
+        const url = `https://api.themoviedb.org/3/movie/${movie_id}?language=${language}`;
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+          },
+        };
 
-        // Si hay un error, lanzamos una excepción
-        if (error) throw new Error(error);
+        // Realizamos la petición
+        const response = await fetch(url, options);
 
-        // Si hay datos, los guardamos en el estado
-        if (data) {
-          setMovie(data);
+        // Si la petición no fue exitosa, lanzamos un error
+        if (!response.ok) {
+          const errorData: ErrorResponse = await response.json();
+          throw new Error(errorData.status_message);
         }
+
+        // Si la petición fue exitosa, obtenemos los datos y los retornamos
+        const data: DetailedMovie = await response.json();
+        setMovie(data);
       } catch (error) {
         if (error instanceof Error) setIsError(error.message);
         else setIsError("Something went wrong");

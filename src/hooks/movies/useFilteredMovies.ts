@@ -1,5 +1,6 @@
 "use client";
-import { getFilteredMovies } from "@/services/movies.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse, ApiMoviesResponseDTO } from "@/types/api-types";
 import { Movie } from "@/types/movie-types";
 import { useEffect, useState } from "react";
 
@@ -33,25 +34,33 @@ export default function useFilteredMovies({
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        // Obtenemos las películas filtradas
-        const [error, data] = await getFilteredMovies({
-          genres,
-          page,
-          language,
-          order_by,
-          order,
-        });
-
-        // Si hay un error, lanzamos una excepción
-        if (error) throw new Error(error);
-
-        // Si hay datos, los guardamos
-        if (data) {
+        // Preparamos la URL y las opciones de la petición
+            const url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=${language}&page=${page}&sort_by=${order_by}.${order}&with_genres=${genres.join(
+              "%2C"
+            )}`;
+            const options = {
+              method: "GET",
+              headers: {
+                accept: "application/json",
+                Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+              },
+            };
+        
+            // Realizamos la petición
+            const response = await fetch(url, options);
+        
+            // Si la petición no fue exitosa, lanzamos un error
+            if (!response.ok) {
+              const errorData: ErrorResponse = await response.json();
+              throw new Error(errorData.status_message);
+            }
+        
+            // Si la petición fue exitosa, obtenemos los datos y los retornamos
+            const data: ApiMoviesResponseDTO = await response.json();
           setMovies(data.results);
           setTotalResults(data.total_results);
           setActualPage(data.page);
           setTotalPages(data.total_pages);
-        }
       } catch (error) {
         if (error instanceof Error) setIsError(error.message);
         else setIsError("Something went wrong");

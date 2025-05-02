@@ -1,13 +1,33 @@
 "use client";
 import PageButtons from "@/components/PageButtons";
 import Spinner from "@/components/Spinner";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useSearchSeries from "@/hooks/series/useSearchSeries";
-import SeriesGrid from "@/components/series/SeriesGrid";
+import MediasGrid from "@/components/medias/MediasGrid";
 
-function SearchSeriesPage() {
+const titlesByLanguage = {
+  "en-US": {
+    title: "Search Results",
+    notFound: "No series found",
+    results: "Total results",
+    showing: "showing",
+  },
+  "es-AR": {
+    title: "Resultados de la búsqueda",
+    notFound: "No se encontraron series",
+    results: "Resultados totales",
+    showing: "se muestran",
+  },
+  "fr-FR": {
+    title: "`Résultats de la recherche",
+    notFound: "Aucune série trouvée",
+    results: "Résultats totaux",
+    showing: "montrant",
+  },
+};
+export default function SearchSeriesPage() {
   const [term, setTerm] = useState<string | null>(null);
   const [page, setPage] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -18,47 +38,22 @@ function SearchSeriesPage() {
     setPage(searchParams.get("page"));
   }, [searchParams]);
 
-  const {
-    actualPage,
-    totalPages,
-    series,
-    totalResults,
-    isLoading: seriesLoading,
-    isError: seriesError,
-  } = useSearchSeries({
-    term: term || "",
-    page: page ? parseInt(page) : 1,
-    language,
-  });
+  const { actualPage, totalPages, series, totalResults, isLoading, isError } =
+    useSearchSeries({
+      term: term || "",
+      page: page ? parseInt(page) : 1,
+      language,
+    });
 
-  const titlesByLanguage = {
-    "en-US": {
-      title: `Search Results: ${term}`,
-      notFound: "No series found",
-      results: `Total results: ${totalResults} (showing ${series.length})`,
-    },
-    "es-AR": {
-      title: `Resultados de la búsqueda: ${term}`,
-      notFound: "No se encontraron series",
-      results: `Resultados totales: ${totalResults} (se muestran ${series.length})`,
-    },
-    "fr-FR": {
-      title: `Résultats de la recherche: ${term}`,
-      notFound: "Aucune série trouvée",
-      results: `Résultats totaux: ${totalResults} (montrant ${series.length})`,
-    },
-  };
+  if (isLoading) return <Spinner />;
+  if (isError) return <p>{isError}</p>;
 
   return (
-    <div className="flex flex-col justify-start items-center p-2 overflow-y-scroll">
+    <div className="flex flex-col justify-start items-center p-2 ">
       <h2 className="text-2xl">
         {titlesByLanguage[language as keyof typeof titlesByLanguage].title}
       </h2>
-      {seriesLoading ? (
-        <Spinner />
-      ) : seriesError ? (
-        <p>{seriesError}</p>
-      ) : series.length === 0 ? (
+      {series.length === 0 ? (
         <p>
           {titlesByLanguage[language as keyof typeof titlesByLanguage].notFound}
         </p>
@@ -69,6 +64,12 @@ function SearchSeriesPage() {
               titlesByLanguage[language as keyof typeof titlesByLanguage]
                 .results
             }
+            : {totalResults} (
+            {
+              titlesByLanguage[language as keyof typeof titlesByLanguage]
+                .showing
+            }{" "}
+            {series.length})
           </p>
 
           <PageButtons
@@ -76,18 +77,20 @@ function SearchSeriesPage() {
             totalPages={totalPages}
             baseUrl={`/series/search?term=${term}&`}
           >
-            <SeriesGrid seriesList={series} />
+            <MediasGrid
+              medias={series.map((s) => {
+                return {
+                  id: s.id,
+                  image: s.poster_path,
+                  url: `/series/${s.id}`,
+                  title: s.name,
+                  overview: s.overview,
+                };
+              })}
+            />
           </PageButtons>
         </>
       )}
     </div>
-  );
-}
-
-export default function SearchSeriesMainPage() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <SearchSeriesPage />
-    </Suspense>
   );
 }

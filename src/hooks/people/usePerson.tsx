@@ -1,5 +1,6 @@
 "use client";
-import { getPersonDetails } from "@/services/people.services";
+import { NEXT_PUBLIC_TMDB_API_KEY } from "@/app.config";
+import { ErrorResponse } from "@/types/api-types";
 import { DetailedPerson } from "@/types/people-types";
 import { useEffect, useState } from "react";
 
@@ -19,10 +20,28 @@ export default function usePerson({
   const [isError, setIsError] = useState<string | null>(null);
   useEffect(() => {
     const fetchPersonDetails = async () => {
-      const [error, data] = await getPersonDetails({ person_id, language });
-      if (error) setIsError(error);
-      if (data) setPerson(data);
-      setIsLoading(false);
+      try {
+        const url = `https://api.themoviedb.org/3/person/${person_id}?language=${language}`;
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+          },
+        };
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          const errorResponse: ErrorResponse = await response.json();
+          throw new Error(errorResponse.status_message);
+        }
+        const data: DetailedPerson = await response.json();
+        setPerson(data);
+      } catch (error) {
+        if (error instanceof Error) setIsError(error.message);
+        else setIsError("Something went wrong");
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchPersonDetails();
   }, [person_id, language]);

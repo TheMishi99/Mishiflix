@@ -1,12 +1,11 @@
 "use client";
 import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useUserLogged } from "@/contexts/UserLoggedContext";
 import useMovie from "@/hooks/movies/useMovie";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
-import AddToFavoriteButton from "@/components/AddToFavoriteButton";
+import Image from "next/image";
 
 const titleByLanguage = {
   "en-US": {
@@ -39,7 +38,6 @@ const titleByLanguage = {
 };
 
 export default function MovieDetailsPage() {
-  const { userLogged, addFavoriteMovie } = useUserLogged();
   const { movie_id } = useParams();
   const { language } = useLanguage();
   const { movie, isLoading, isError } = useMovie({
@@ -47,128 +45,77 @@ export default function MovieDetailsPage() {
     language,
   });
 
-  const handleAddToFavoriteButtonClick = async ({
-    movie_id,
-    movie_title,
-  }: {
-    movie_id: number;
-    movie_title: string;
-  }) => {
-    const addFavoriteMovieSuccess = await addFavoriteMovie({
-      movie_id,
-      movie_title,
-    });
-    alert(
-      addFavoriteMovieSuccess
-        ? "Pelicula añadida a favoritos con exito"
-        : "Error al añadir la pelicula a favoritos"
-    );
-  };
+  if (isLoading) return <Spinner />;
+  if (isError) return <p>{isError}</p>;
+  if (!movie) return <p>No movie found</p>;
 
   return (
-    <div
-      id="movie-details"
-      className="flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll"
-    >
-      <h2 className="text-2xl">
-        {titleByLanguage[language as keyof typeof titleByLanguage].mainTitle}
-      </h2>
-      {isLoading ? (
-        <Spinner />
-      ) : isError ? (
-        <p>{isError}</p>
-      ) : (
-        movie && (
-          <div className="flex flex-col sm:flex-row justify-center items-center sm:items-start p-2 gap-2">
-            <div className="flex flex-col justify-center items-center p-2 gap-2">
-              <img
-                src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + movie.poster_path}
-                alt={movie.title}
-              />
-              <h3 className="text-xl">{movie.title}</h3>
-              {userLogged && (
-                <AddToFavoriteButton
-                  onClick={() =>
-                    handleAddToFavoriteButtonClick({
-                      movie_id: movie.id,
-                      movie_title: movie.title,
-                    })
-                  }
-                  included={userLogged.favoriteMovies
-                    .map((favMov) => favMov.id)
-                    .includes(movie.id)}
-                  language={language}
-                />
-              )}
-            </div>
-            <div className="sm:w-2/3 flex flex-col justify-center items-start p-2 gap-2">
-              <p>
-                <strong>
-                  {
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .overview
-                  }
-                </strong>
-                : {movie.overview}
-              </p>
-              <p>
-                <strong>
-                  {
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .genres
-                  }
-                </strong>
-                : {movie.genres.map((genre) => genre.name).join(", ")}
-              </p>
-              <p>
-                <strong>
-                  {
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .budget.title
-                  }
-                </strong>
-                :{" "}
-                {movie.budget.toLocaleString(language, {
-                  currency:
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .budget.currency,
-                  style: "currency",
-                })}
-              </p>
-              <p>
-                <strong>
-                  {
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .popularity
-                  }
-                </strong>
-                : {movie.popularity}
-              </p>
-              <p>
-                <strong>
-                  {
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .release_date
-                  }
-                </strong>
-                : {movie.release_date}
-              </p>
-              <p>
-                <strong>
-                  {
-                    titleByLanguage[language as keyof typeof titleByLanguage]
-                      .homepage
-                  }
-                </strong>
-                :{" "}
-                <Link href={movie.homepage} className="text-red-600">
-                  {movie.homepage}
-                </Link>
-              </p>
-            </div>
-          </div>
-        )
-      )}
+    <div className="flex flex-col sm:flex-row justify-center items-center sm:items-start p-2 gap-2">
+      <div className="flex flex-col justify-center items-center p-2 gap-2">
+        <Image
+          src={NEXT_PUBLIC_TMDB_IMAGES_PREFIX + movie.poster_path}
+          alt={movie.title}
+          width={100000}
+          height={100000}
+          className="w-48 aspect-[2/3]"
+        />
+      </div>
+      <div className="w-full sm:w-2/3 flex flex-col justify-center items-start p-2 gap-2">
+        <p className="w-full">
+          <strong>
+            {titleByLanguage[language as keyof typeof titleByLanguage].overview}
+          </strong>
+          : {movie.overview}
+        </p>
+        <p className="w-full">
+          <strong>
+            {titleByLanguage[language as keyof typeof titleByLanguage].genres}
+          </strong>
+          : {movie.genres.map((genre) => genre.name).join(", ")}
+        </p>
+        <p className="w-full">
+          <strong>
+            {
+              titleByLanguage[language as keyof typeof titleByLanguage].budget
+                .title
+            }
+          </strong>
+          :{" "}
+          {movie.budget.toLocaleString(language, {
+            currency:
+              titleByLanguage[language as keyof typeof titleByLanguage].budget
+                .currency,
+            style: "currency",
+          })}
+        </p>
+        <p className="w-full">
+          <strong>
+            {
+              titleByLanguage[language as keyof typeof titleByLanguage]
+                .popularity
+            }
+          </strong>
+          : {movie.popularity}
+        </p>
+        <p className="w-full">
+          <strong>
+            {
+              titleByLanguage[language as keyof typeof titleByLanguage]
+                .release_date
+            }
+          </strong>
+          : {movie.release_date}
+        </p>
+        <p className="w-full">
+          <strong>
+            {titleByLanguage[language as keyof typeof titleByLanguage].homepage}
+          </strong>
+          :{" "}
+          <Link href={movie.homepage} className="text-red-600" target="_blank">
+            {movie.homepage}
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

@@ -1,107 +1,86 @@
 "use client";
-import NavBar from "@/components/NavBar";
+import Navbar from "@/components/ui/Navbar";
 import SearchBar from "@/components/SearchBar";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { NavBarItem } from "@/types/other-types";
+import { NavbarItem } from "@/types/other-types";
+import { ReactNode, useMemo } from "react";
+
+const titlesByLanguage = {
+  "en-US": {
+    popular: "Popular",
+    topRated: "Top Rated",
+    onTheAir: "On The Air",
+    airingToday: "Airing Today",
+    filter: "Filter",
+  },
+  "es-AR": {
+    popular: "Populares",
+    topRated: "Mejor Valoradas",
+    onTheAir: "En Emisión",
+    airingToday: "Emitiendo Hoy",
+    filter: "Filtrar",
+  },
+  "fr-FR": {
+    popular: "Populaires",
+    topRated: "Les Mieux Notés",
+    onTheAir: "En Cours de Diffusion",
+    airingToday: "Diffusé Aujourd'hui",
+    filter: "Filtrer",
+  },
+};
 
 export default function SeriesLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{
+  children: ReactNode;
+}>) {
   const { language } = useLanguage();
-  const navBarItemsByLanguage: { [key: string]: NavBarItem[] } = {
-    "en-US": [
+  const navbarItems: NavbarItem[] = useMemo(
+    () => [
       {
-        render_condition: true,
+        id: 1,
+        condition: true,
         url: "/series/popular",
-        title: "Popular",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage].popular,
       },
       {
-        render_condition: true,
+        id: 2,
+        condition: true,
         url: "/series/top-rated",
-        title: "Top Rated",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage].topRated,
       },
       {
-        render_condition: true,
+        id: 3,
+        condition: true,
         url: "/series/on-the-air",
-        title: "On The Air",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage].onTheAir,
       },
       {
-        render_condition: true,
+        id: 4,
+        condition: true,
         url: "/series/airing-today",
-        title: "Airing Today",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage]
+            .airingToday,
       },
       {
-        render_condition: true,
+        id: 5,
+        condition: true,
         url: "/series/filter",
-        title: "Filter",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage].filter,
       },
     ],
-    "es-AR": [
-      {
-        render_condition: true,
-        url: "/series/popular",
-        title: "Populares",
-      },
-      {
-        render_condition: true,
-        url: "/series/top-rated",
-        title: "Mejor Valoradas",
-      },
-      {
-        render_condition: true,
-        url: "/series/on-the-air",
-        title: "En Emisión",
-      },
-      {
-        render_condition: true,
-        url: "/series/airing-today",
-        title: "Se Emiten Hoy",
-      },
-      {
-        render_condition: true,
-        url: "/series/filter",
-        title: "Filtrar",
-      },
-    ],
-    "fr-FR": [
-      {
-        render_condition: true,
-        url: "/series/popular",
-        title: "Populaires",
-      },
-      {
-        render_condition: true,
-        url: "/series/top-rated",
-        title: "Les Mieux Notées",
-      },
-      {
-        render_condition: true,
-        url: "/series/on-the-air",
-        title: "En Cours de Diffusion",
-      },
-      {
-        render_condition: true,
-        url: "/series/airing-today",
-        title: "Diffusées Aujourd'hui",
-      },
-      {
-        render_condition: true,
-        url: "/series/filter",
-        title: "Filtrer",
-      },
-    ],
-  };
+    [language]
+  );
   return (
-    <div className="w-full flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll">
+    <div className="w-full flex flex-col justify-start items-center p-2 gap-2">
       {" "}
       <SearchBar submit_url="/series/search" />
-      <NavBar
-        navBarItems={
-          navBarItemsByLanguage[language as keyof typeof navBarItemsByLanguage]
-        }
-      />
+      <Navbar navbarItems={navbarItems} />
       {children}
     </div>
   );

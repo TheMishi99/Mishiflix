@@ -1,94 +1,85 @@
 "use client";
-import NavBar from "@/components/NavBar";
+import Navbar from "@/components/ui/Navbar";
 import SearchBar from "@/components/SearchBar";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { NavBarItem } from "@/types/other-types";
+import { NavbarItem } from "@/types/other-types";
+import { ReactNode, useMemo } from "react";
+
+const titlesByLanguage = {
+  "en-US": {
+    popular: "Popular",
+    topRated: "Top Rated",
+    nowPlaying: "Now Playing",
+    upcoming: "Upcoming",
+    filter: "Filter",
+  },
+  "es-AR": {
+    popular: "Populares",
+    topRated: "Mejor Valoradas",
+    nowPlaying: "En Cartelera",
+    upcoming: "Próximos Estrenos",
+    filter: "Filtrar",
+  },
+  "fr-FR": {
+    popular: "Populaires",
+    topRated: "Les Mieux Notés",
+    nowPlaying: "À l'Affiche",
+    upcoming: "À Venir",
+    filter: "Filtrer",
+  },
+};
 
 export default function MoviesLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{
+  children: ReactNode;
+}>) {
   const { language } = useLanguage();
-  const navBarItemsByLanguage: { [key: string]: NavBarItem[] } = {
-    "en-US": [
-      { render_condition: true, url: "/movies/popular", title: "Popular" },
+  const navbaritems: NavbarItem[] = useMemo(
+    () => [
       {
-        render_condition: true,
+        id: 1,
+        condition: true,
+        url: "/movies/popular",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage].popular,
+      },
+      {
+        id: 2,
+        condition: true,
         url: "/movies/top-rated",
-        title: "Top Rated",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage].topRated,
       },
       {
-        render_condition: true,
+        id: 3,
+        condition: true,
         url: "/movies/now-playing",
-        title: "Now Playing",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage]
+            .nowPlaying,
       },
       {
-        render_condition: true,
+        id: 4,
+        condition: true,
         url: "/movies/upcoming",
-        title: "Upcoming",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage].upcoming,
       },
       {
-        render_condition: true,
+        id: 5,
+        condition: true,
         url: "/movies/filter",
-        title: "Filter",
+        title:
+          titlesByLanguage[language as keyof typeof titlesByLanguage].filter,
       },
     ],
-    "es-AR": [
-      { render_condition: true, url: "/movies/popular", title: "Popular" },
-      {
-        render_condition: true,
-        url: "/movies/top-rated",
-        title: "Mejor Valoradas",
-      },
-      {
-        render_condition: true,
-        url: "/movies/now-playing",
-        title: "En Cartelera",
-      },
-      {
-        render_condition: true,
-        url: "/movies/upcoming",
-        title: "Próximos Estrenos",
-      },
-      {
-        render_condition: true,
-        url: "/movies/filter",
-        title: "Filtrar",
-      },
-    ],
-    "fr-FR": [
-      { render_condition: true, url: "/movies/popular", title: "Populaires" },
-      {
-        render_condition: true,
-        url: "/movies/top-rated",
-        title: "Les Mieux Notés",
-      },
-      {
-        render_condition: true,
-        url: "/movies/now-playing",
-        title: "À l'Affiche",
-      },
-      {
-        render_condition: true,
-        url: "/movies/upcoming",
-        title: "À Venir",
-      },
-      {
-        render_condition: true,
-        url: "/movies/filter",
-        title: "Filtrer",
-      },
-    ],
-  };
+    [language]
+  );
   return (
-    <div className="w-full flex flex-col justify-start items-center p-2 gap-2 overflow-y-scroll">
+    <div className="w-full flex flex-col justify-start items-center p-2 gap-2">
       <SearchBar submit_url="/movies/search" />
-      <NavBar
-        navBarItems={
-          navBarItemsByLanguage[language as keyof typeof navBarItemsByLanguage]
-        }
-      />
+      <Navbar navbarItems={navbaritems} />
       {children}
     </div>
   );
