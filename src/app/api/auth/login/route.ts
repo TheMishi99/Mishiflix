@@ -4,12 +4,10 @@ import { connectToDatabase } from "@/database/db.config";
 import { compareSync } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { JWT_SECRET, NODE_ENV } from "@/app.config";
+import { ApiUserResponse, LoginDTO } from "@/types/api-types";
 
 export async function POST(request: NextRequest) {
-  const body = (await request.json()) as {
-    username?: string;
-    password?: string;
-  };
+  const body = (await request.json()) as LoginDTO;
   const { username, password } = body;
   if (!username)
     return NextResponse.json(
@@ -33,7 +31,8 @@ export async function POST(request: NextRequest) {
     );
 
   await connectToDatabase();
-  const response = NextResponse.json({ user: userFound });
+  const apiUserResponse: ApiUserResponse = { user: userFound };
+  const response = NextResponse.json(apiUserResponse);
   const token = sign(userFound, JWT_SECRET, { expiresIn: 1000 * 60 * 60 * 24 });
   response.cookies.set("token", token, {
     httpOnly: true,

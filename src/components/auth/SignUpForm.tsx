@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Button from "../ui/Button";
@@ -9,22 +9,22 @@ import Avatar from "../ui/Avatar";
 const avatars = [
   {
     id: 1,
-    url: "avatar-1.jpg",
+    fileName: "avatar-1.jpg",
     alt: "avatar-1",
   },
   {
     id: 2,
-    url: "avatar-2.webp",
+    fileName: "avatar-2.webp",
     alt: "avatar-2",
   },
   {
     id: 3,
-    url: "avatar-3.jpg",
+    fileName: "avatar-3.jpg",
     alt: "avatar-3",
   },
   {
     id: 4,
-    url: "avatar-4.jpg",
+    fileName: "avatar-4.jpg",
     alt: "avatar-4",
   },
 ];
@@ -60,30 +60,22 @@ const signUpTitlesByLanguage = {
 };
 
 export default function SignUpForm() {
-  const [avatar, setAvatar] = useState<string>("/avatar-1.jpg");
+  const [avatar, setAvatar] = useState<string>("avatar-1.jpg");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { signUp, error } = useAuth();
+  const { signUp, isError } = useAuth();
 
   const { language } = useLanguage();
 
-  const handleSignUpSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleSignUpSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const signUpSuccess = await signUp({ avatar, username, password });
 
     if (signUpSuccess) {
       window.location.href = "/";
-    } else {
-      alert(error);
     }
-  };
-
-  const onAvatarInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAvatar(event.target.value);
   };
 
   return (
@@ -114,56 +106,55 @@ export default function SignUpForm() {
               key={avatar.id}
               className="flex flex-col justify-center items-center gap-2"
             >
-              <Avatar src={`/${avatar.url}`} alt={avatar.alt} />
+              <Avatar src={`/${avatar.fileName}`} alt={avatar.alt} />
               <input
                 type="radio"
                 name="avatar"
-                value={avatar.url}
-                onChange={onAvatarInputChange}
+                value={avatar.fileName}
+                onChange={() => setAvatar(avatar.fileName)}
                 defaultChecked={avatar.id === 1}
               />
             </li>
           ))}
         </ul>
       </div>
-      <div className="w-full flex justify-center items-center">
-        <input
-          type="text"
-          name="username"
-          id="username"
-          placeholder="Username"
-          className="w-full p-2 rounded-xl bg-zinc-800"
-          onChange={(event) => setUsername(event.target.value)}
-          aria-required="true"
-          required
-        />
+      <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Username"
+        className="w-full p-2 rounded-xl bg-zinc-800"
+        onChange={(event) => setUsername(event.target.value)}
+        aria-required="true"
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Password"
+        className="w-full p-2 rounded-xl bg-zinc-800"
+        onChange={(event) => setPassword(event.target.value)}
+        aria-required="true"
+        required
+      />
+      {isError && <p className="text-red-400">{isError}</p>}
+      <div className="w-full flex flex-col justify-center items-center p-2 gap-2">
+        <Button type="submit" variant="primary">
+          {
+            signUpTitlesByLanguage[
+              language as keyof typeof signUpTitlesByLanguage
+            ].signUp
+          }
+        </Button>
+        <Button type="reset" variant="secondary">
+          {
+            signUpTitlesByLanguage[
+              language as keyof typeof signUpTitlesByLanguage
+            ].reset
+          }
+        </Button>
       </div>
-      <div className="w-full flex justify-center items-center">
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Password"
-          className="w-full p-2 rounded-xl bg-zinc-800"
-          onChange={(event) => setPassword(event.target.value)}
-          aria-required="true"
-          required
-        />
-      </div>
-      <Button type="submit" variant="primary">
-        {
-          signUpTitlesByLanguage[
-            language as keyof typeof signUpTitlesByLanguage
-          ].signUp
-        }
-      </Button>
-      <Button type="reset" variant="secondary">
-        {
-          signUpTitlesByLanguage[
-            language as keyof typeof signUpTitlesByLanguage
-          ].reset
-        }
-      </Button>
       <div className="flex justify-center items-center gap-2">
         <span>
           {

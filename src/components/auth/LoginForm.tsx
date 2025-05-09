@@ -55,7 +55,7 @@ export default function LoginForm() {
   const router = useRouter();
 
   // Hook para obtener la función de login y el error
-  const { error, login } = useAuth();
+  const { isError: error, login } = useAuth();
 
   // Obtener el idioma actual de la aplicación
   const { language } = useLanguage();
