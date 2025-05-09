@@ -23,7 +23,9 @@ export default function MediaCard({ media }: { media: Media }) {
           {delimitString({ phrase: media.overview, max: 100 })}
         </p>
       </Link>
-      <p className="flex sm:hidden">{media.title}</p>
+      <p className="flex sm:hidden">
+        {delimitString({ phrase: media.title, max: 25 })}
+      </p>
     </div>
   );
 }

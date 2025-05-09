@@ -5,9 +5,9 @@ import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useUpcomingMovies from "@/hooks/movies/useUpcomingMovies";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-function UpcomingMoviesPage() {
+export default function UpcomingMoviesPage() {
   const { language } = useLanguage();
   const params = useSearchParams();
   const [page, setPage] = useState<number>(1);
@@ -54,13 +54,5 @@ function UpcomingMoviesPage() {
         </>
       )}
     </div>
-  );
-}
-
-export default function UpcomingMoviesMainPage() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <UpcomingMoviesPage />
-    </Suspense>
   );
 }

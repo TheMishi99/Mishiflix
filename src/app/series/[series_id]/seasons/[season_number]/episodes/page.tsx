@@ -31,7 +31,7 @@ export default function SeriesDetailsSeasonDetailsEpisodesPage() {
         {season.episodes.map((episode) => (
           <li
             key={episode.id + episode.name}
-            className="hover:scale-105 hover:border rounded-xl hover:border-red-600"
+            className="border border-zinc-800 rounded-xl hover:border-red-600"
           >
             <Link
               href={`/series/${series_id}/seasons/${season_number}/episodes/${episode.episode_number}`}

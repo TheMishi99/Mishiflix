@@ -32,14 +32,14 @@ const titlesByLanguage = {
 export default function FilteredMoviesPage() {
   const [page, setPage] = useState<number>(1);
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
-  const [order_by, setOrder_by] = useState<string>("popularity");
+  const [sortBy, setSortBy] = useState<string>("popularity");
   const [order, setOrder] = useState<string>("desc");
   const searchParams = useSearchParams();
   const { language } = useLanguage();
 
   useEffect(() => {
     setPage(Number(searchParams.get("page")) || 1);
-    setOrder_by(searchParams.get("order_by") || "popularity");
+    setSortBy(searchParams.get("sort_by") || "popularity");
     setOrder(searchParams.get("order") || "desc");
     setSelectedGenres(
       searchParams
@@ -54,7 +54,7 @@ export default function FilteredMoviesPage() {
       page,
       language,
       genres: selectedGenres,
-      order_by,
+      sortBy,
       order,
     });
 
@@ -63,8 +63,8 @@ export default function FilteredMoviesPage() {
       <MovieFilters
         selectedGenres={selectedGenres}
         setSelectedGenres={setSelectedGenres}
-        sortBy={order_by}
-        setSortBy={setOrder_by}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
         order={order}
         setOrder={setOrder}
       />
@@ -101,7 +101,7 @@ export default function FilteredMoviesPage() {
               selectedGenres.length >= 1
                 ? `genres=${selectedGenres.join(",")}&`
                 : ""
-            }order_by=${order_by}&order=${order}&`}
+            }sort_by=${sortBy}&order=${order}&`}
           >
             <MediasGrid
               medias={movies.map((m) => {

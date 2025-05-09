@@ -2,12 +2,12 @@
 import PageButtons from "@/components/PageButtons";
 import Spinner from "@/components/Spinner";
 import useMovies from "@/hooks/movies/useMovies";
-import { Suspense, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import MediasGrid from "@/components/medias/MediasGrid";
 
-function SearchMoviesPage() {
+export default function SearchMoviesPage() {
   const [term, setTerm] = useState<string | null>(null);
   const [page, setPage] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -91,13 +91,5 @@ function SearchMoviesPage() {
         </>
       )}
     </div>
-  );
-}
-
-export default function SearchMoviesMainPage() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <SearchMoviesPage />
-    </Suspense>
   );
 }

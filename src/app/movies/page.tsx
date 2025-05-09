@@ -7,7 +7,6 @@ import Link from "next/link";
 import useTopRatedMovies from "@/hooks/movies/useTopRatedMovies";
 import MediasSlideableList from "@/components/medias/MediasSlideableList";
 import { useMemo } from "react";
-import Spinner from "@/components/Spinner";
 
 // Definimos el texto para ver mas por idioma
 const seeMoreTextByLanguage = {
@@ -41,29 +40,17 @@ export default function MoviesPage() {
   const { language } = useLanguage();
 
   // Obtenemos las peliculas que se estan reproduciendo actualmente, las populares y las proximas a estrenarse
-  const {
-    movies: nowPlayingMovies,
-    isLoading: isNowPlayingMoviesLoading,
-    isError: isNowPlayingMoviesError,
-  } = useNowPlayingMovies({
-    page: 1,
-    language,
-  });
-  const {
-    movies: popularMovies,
-    isLoading: isPopularMoviesLoading,
-    isError: isPopularMoviesError,
-  } = usePopularMovies({ page: 1, language });
-  const {
-    movies: upcomingMovies,
-    isLoading: isUpcomingMoviesLoading,
-    isError: isUpcomingMoviesError,
-  } = useUpcomingMovies({ page: 1, language });
-  const {
-    movies: topRatedMovies,
-    isLoading: isTopRatedMoviesLoading,
-    isError: isTopRatedMoviesError,
-  } = useTopRatedMovies({ page: 1, language });
+  const { movies: nowPlayingMovies, isError: isNowPlayingMoviesError } =
+    useNowPlayingMovies({
+      page: 1,
+      language,
+    });
+  const { movies: popularMovies, isError: isPopularMoviesError } =
+    usePopularMovies({ page: 1, language });
+  const { movies: upcomingMovies, isError: isUpcomingMoviesError } =
+    useUpcomingMovies({ page: 1, language });
+  const { movies: topRatedMovies, isError: isTopRatedMoviesError } =
+    useTopRatedMovies({ page: 1, language });
 
   // Definimos las secciones de la pagina principal por idioma
   const sections = useMemo(
@@ -100,14 +87,6 @@ export default function MoviesPage() {
     ],
     [language, popularMovies, upcomingMovies, nowPlayingMovies, topRatedMovies]
   );
-
-  if (
-    isPopularMoviesLoading ||
-    isUpcomingMoviesLoading ||
-    isTopRatedMoviesLoading ||
-    isNowPlayingMoviesLoading
-  )
-    return <Spinner />;
 
   if (isPopularMoviesError) return <p>{isPopularMoviesError}</p>;
   if (isNowPlayingMoviesError) return <p>{isNowPlayingMoviesError}</p>;

@@ -1,8 +1,8 @@
-import SignUpForm from "@/components/users/SignUpForm";
+import SignUpForm from "@/components/auth/SignUpForm";
 
 export default function SignUpPage() {
   return (
-    <div id="sign-up" className="flex justify-center items-center">
+    <div className="flex-1 flex justify-center items-center">
       <SignUpForm />
     </div>
   );

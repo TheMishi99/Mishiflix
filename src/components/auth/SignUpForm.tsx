@@ -9,22 +9,22 @@ import Avatar from "../ui/Avatar";
 const avatars = [
   {
     id: 1,
-    url: "/avatar-1.jpg",
+    url: "avatar-1.jpg",
     alt: "avatar-1",
   },
   {
     id: 2,
-    url: "/avatar-2.webp",
+    url: "avatar-2.webp",
     alt: "avatar-2",
   },
   {
     id: 3,
-    url: "/avatar-3.jpg",
+    url: "avatar-3.jpg",
     alt: "avatar-3",
   },
   {
     id: 4,
-    url: "/avatar-4.jpg",
+    url: "avatar-4.jpg",
     alt: "avatar-4",
   },
 ];
@@ -68,7 +68,9 @@ export default function SignUpForm() {
 
   const { language } = useLanguage();
 
-  const handleSignUpSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUpSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
     const signUpSuccess = await signUp({ avatar, username, password });
@@ -112,7 +114,7 @@ export default function SignUpForm() {
               key={avatar.id}
               className="flex flex-col justify-center items-center gap-2"
             >
-              <Avatar src={avatar.url} alt={avatar.alt} />
+              <Avatar src={`/${avatar.url}`} alt={avatar.alt} />
               <input
                 type="radio"
                 name="avatar"

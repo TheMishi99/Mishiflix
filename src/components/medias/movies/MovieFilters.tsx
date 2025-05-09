@@ -1,9 +1,9 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import useMovieGenres from "@/hooks/genres/useMovieGenres";
-import Spinner from "../../Spinner";
 import { Dispatch, SetStateAction } from "react";
 import { SelectOption } from "@/types/other-types";
 import MediaFilters from "../MediaFilters";
+import Spinner from "@/components/Spinner";
 
 const genresTitleByLanguage = {
   "en-US": { genres: "Genres", notFound: "Genres not Found" },

@@ -27,7 +27,7 @@ export default function SeriesDetailsSeasonsPage() {
         {series.seasons.map((season) => (
           <li
             key={season.id + season.name}
-            className="hover:scale-105 hover:border rounded-xl hover:border-red-600"
+            className="border border-zinc-800 rounded-xl hover:border-red-600"
           >
             <Link
               href={`/series/${series_id}/seasons/${season.season_number}`}

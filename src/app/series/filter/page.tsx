@@ -41,7 +41,7 @@ export default function FilteredSeriesPage() {
 
   useEffect(() => {
     setPage(Number(searchParams.get("page")) || 1);
-    setSortBy(searchParams.get("order_by") || "popularity");
+    setSortBy(searchParams.get("sort_by") || "popularity");
     setOrder(searchParams.get("order") || "desc");
     setSelectedGenres(
       searchParams
@@ -108,7 +108,7 @@ export default function FilteredSeriesPage() {
               selectedGenres.length >= 1
                 ? `genres=${selectedGenres.join(",")}&`
                 : ""
-            }order_by=${sortBy}&order=${order}&`}
+            }sort_by=${sortBy}&order=${order}&`}
           >
             <MediasGrid
               medias={series.map((s) => {

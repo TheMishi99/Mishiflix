@@ -7,13 +7,12 @@ export default function ProfilePage() {
 
   return (
     <div
-      id="profile"
-      className="flex flex-col sm:flex-row justify-center items-center p-2 gap-2 bg-zinc-900 rounded-xl"
+      className="flex-1 flex flex-col sm:flex-row justify-center items-center p-2 gap-2"
     >
       {userLogged && (
-        <div className="flex flex-col justify-center items-center p-2 gap-2">
+        <div className="flex flex-col justify-center items-center p-2 gap-2 bg-zinc-800 rounded-xl">
           <Avatar
-            src={userLogged.avatar}
+            src={`/${userLogged.avatar}`}
             alt={userLogged.username}
             className="size-32"
           />

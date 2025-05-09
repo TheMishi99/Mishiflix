@@ -8,13 +8,13 @@ export default function useFilteredMovies({
   page,
   language,
   genres,
-  order_by,
+  sortBy,
   order,
 }: {
   page: number;
   language: string;
   genres: number[];
-  order_by: string;
+  sortBy: string;
   order: string;
 }): {
   actualPage: number;
@@ -35,7 +35,7 @@ export default function useFilteredMovies({
     const fetchMovies = async () => {
       try {
         // Preparamos la URL y las opciones de la petición
-            const url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=${language}&page=${page}&sort_by=${order_by}.${order}&with_genres=${genres.join(
+            const url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=${language}&page=${page}&sort_by=${sortBy}.${order}&with_genres=${genres.join(
               "%2C"
             )}`;
             const options = {
@@ -69,7 +69,7 @@ export default function useFilteredMovies({
       }
     };
     fetchMovies();
-  }, [page, language, genres, order_by, order]);
+  }, [page, language, genres, sortBy, order]);
 
   // Devolvemos los datos
   return {

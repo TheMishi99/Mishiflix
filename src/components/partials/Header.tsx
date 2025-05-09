@@ -8,8 +8,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { NavbarItem } from "@/types/other-types";
 import { useMemo, useState } from "react";
 import Navbar from "../ui/Navbar";
-import UserMenu from "../users/UserMenu";
 import { Menu } from "lucide-react";
+import UserMenu from "../auth/UserMenu";
 
 const bebasNeue = Bebas_Neue({
   weight: ["400"],
