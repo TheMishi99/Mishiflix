@@ -77,7 +77,7 @@ export default function MoviesLayout({
     [language]
   );
   return (
-    <div className="w-full flex flex-col justify-start items-center p-2 gap-2">
+    <div className="flex-1 flex flex-col justify-start items-center p-2 gap-2">
       <SearchBar submit_url="/movies/search" />
       <Navbar navbarItems={navbaritems} />
       {children}

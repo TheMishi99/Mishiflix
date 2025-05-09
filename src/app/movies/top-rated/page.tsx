@@ -5,9 +5,9 @@ import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useTopRatedMovies from "@/hooks/movies/useTopRatedMovies";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-function TopRatedMoviesPage() {
+export default function TopRatedMoviesPage() {
   const { language } = useLanguage();
   const params = useSearchParams();
   const [page, setPage] = useState<number>(1);
@@ -54,13 +54,5 @@ function TopRatedMoviesPage() {
         </>
       )}
     </div>
-  );
-}
-
-export default function TopRatedMoviesMainPage() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <TopRatedMoviesPage />
-    </Suspense>
   );
 }

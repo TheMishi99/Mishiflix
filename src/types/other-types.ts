@@ -6,11 +6,16 @@ export type NavbarItem = {
 };
 
 export type DropdownItem = {
-  condition: boolean;
   id: number;
-  title: string;
-  url: string;
-};
+  condition: boolean;
+  content: string;
+} & (
+  | { type: "button"; onClick?: () => void }
+  | {
+      type: "link";
+      url: string;
+    }
+);
 
 export type Media = {
   id: number;

@@ -5,7 +5,7 @@ import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import usePopularMovies from "@/hooks/movies/usePopularMovies";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const titlesByLanguage = {
   "en-US": "Popular Movies",
@@ -13,7 +13,7 @@ const titlesByLanguage = {
   "fr-FR": "Films Populaires",
 };
 
-function PopularMoviesPage() {
+export default function PopularMoviesPage() {
   const { language } = useLanguage();
   const params = useSearchParams();
   const [page, setPage] = useState<number>(1);
@@ -54,13 +54,5 @@ function PopularMoviesPage() {
         </>
       )}
     </div>
-  );
-}
-
-export default function PopularMoviesMainPage() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <PopularMoviesPage />
-    </Suspense>
   );
 }

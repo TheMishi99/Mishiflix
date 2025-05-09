@@ -1,11 +1,13 @@
 "use client";
-import Spinner from "@/components/Spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import useMovie from "@/hooks/movies/useMovie";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { NEXT_PUBLIC_TMDB_IMAGES_PREFIX } from "@/app.config";
 import Image from "next/image";
+import Spinner from "@/components/Spinner";
+import Button from "@/components/ui/Button";
+import { PlayCircle } from "lucide-react";
 
 const titleByLanguage = {
   "en-US": {
@@ -16,6 +18,7 @@ const titleByLanguage = {
     popularity: "Popularity",
     release_date: "Release Date",
     homepage: "Homepage",
+    watch: "Watch",
   },
   "es-AR": {
     mainTitle: "Detalles de la Película",
@@ -25,6 +28,7 @@ const titleByLanguage = {
     popularity: "Popularidad",
     release_date: "Fecha de lanzamiento",
     homepage: "Pagina principal",
+    watch: "Ver",
   },
   "fr-FR": {
     mainTitle: "Détails du Film",
@@ -34,6 +38,7 @@ const titleByLanguage = {
     popularity: "Popularité",
     release_date: "Date de sortie",
     homepage: "Page d'accueil",
+    watch: "Regarder",
   },
 };
 
@@ -59,6 +64,11 @@ export default function MovieDetailsPage() {
           height={100000}
           className="w-48 aspect-[2/3]"
         />
+        <div className="flex">
+          <Button type="button" variant="primary">
+            {titleByLanguage[language as keyof typeof titleByLanguage].watch} <PlayCircle />
+          </Button>
+        </div>
       </div>
       <div className="w-full sm:w-2/3 flex flex-col justify-center items-start p-2 gap-2">
         <p className="w-full">

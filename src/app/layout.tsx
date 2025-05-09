@@ -6,6 +6,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ReactNode } from "react";
 import LoaderProvider from "@/providers/LoaderProvider";
+import Footer from "@/components/partials/Footer";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -29,9 +30,10 @@ export default function RootLayout({
         <LanguageProvider defaultLanguage="en-US">
           <AuthProvider>
             <LoaderProvider>
-              <div id="app" className="min-h-dvh flex flex-col p-2 gap-2">
+              <div id="app" className="min-h-dvh flex flex-col gap-2">
                 <Header />
                 {children}
+                <Footer />
               </div>
             </LoaderProvider>
           </AuthProvider>

@@ -20,13 +20,6 @@ export default function MediasSlideableList({
 
   return (
     <div className="relative w-full">
-      <button
-        aria-label="scroll left"
-        onClick={() => scroll("left")}
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-zinc-800 text-white p-2 rounded-full z-10 hover:bg-zinc-700"
-      >
-        <ArrowLeft />
-      </button>
       <ul
         ref={containerRef}
         className="flex gap-4 p-2 overflow-x-auto w-full max-w-screen scrollbar-hide snap-x snap-mandatory"
@@ -37,13 +30,6 @@ export default function MediasSlideableList({
           </li>
         ))}
       </ul>
-      <button
-        aria-label="scroll right"
-        onClick={() => scroll("right")}
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full z-10 hover:bg-gray-700"
-      >
-        <ArrowRight />
-      </button>
     </div>
   );
 }

@@ -29,7 +29,7 @@ const titlesByLanguage = {
 };
 
 export default function UserMenu() {
-  const { userLogged } = useAuth();
+  const { userLogged, logout } = useAuth();
   const { language } = useLanguage();
 
   const dropdownItems: DropdownItem[] = useMemo(
@@ -37,30 +37,36 @@ export default function UserMenu() {
       {
         id: 1,
         condition: !userLogged,
-        title:
+        type: "link",
+        content:
           titlesByLanguage[language as keyof typeof titlesByLanguage].login,
         url: "/auth/login",
       },
       {
         id: 2,
         condition: !userLogged,
-        title:
+        type: "link",
+        content:
           titlesByLanguage[language as keyof typeof titlesByLanguage].signUp,
         url: "/auth/sign-up",
       },
       {
         id: 3,
         condition: userLogged !== null,
-        title:
+        type: "link",
+        content:
           titlesByLanguage[language as keyof typeof titlesByLanguage].profile,
         url: "/auth/profile",
       },
       {
         id: 4,
         condition: userLogged !== null,
-        title:
+        type: "button",
+        content:
           titlesByLanguage[language as keyof typeof titlesByLanguage].logout,
-        url: "/auth/logout",
+        onClick: async () => {
+          await logout();
+        },
       },
     ],
     [language, userLogged]
@@ -73,7 +79,7 @@ export default function UserMenu() {
           userLogged ? (
             <>
               <Avatar
-                src={userLogged.avatar}
+                src={`/${userLogged.avatar}`}
                 alt={userLogged.username}
                 className="size-6"
               />

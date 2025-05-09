@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Loader } from "lucide-react";
+import Spinner from "@/components/Spinner";
 import { ReactNode } from "react";
 
 export default function LoaderProvider({
@@ -9,11 +9,6 @@ export default function LoaderProvider({
 }: Readonly<{ children: ReactNode }>) {
   const { loading: languageLoading } = useLanguage();
   const { loading: authLoading } = useAuth();
-  if (languageLoading || authLoading)
-    return (
-      <div className="min-h-dvh flex justify-center items-center ">
-        <Loader className="animate-spin" />
-      </div>
-    );
+  if (languageLoading || authLoading) return <Spinner />;
   return children;
 }
