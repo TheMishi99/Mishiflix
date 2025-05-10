@@ -40,6 +40,14 @@ export type ApiPeopleDTO = {
   total_results: number;
 };
 
+export type ApiErrorResponse = {
+  message: string;
+};
+
+export type ApiUserResponse = {
+  user: User;
+};
+
 export type LoginDTO = Pick<User, "username" | "password">;
 
-export type SignUpDTO = Omit<User, "id" | "favoriteMovies" | "favoriteSeries">;
+export type SignUpDTO = Omit<User, "_id">;

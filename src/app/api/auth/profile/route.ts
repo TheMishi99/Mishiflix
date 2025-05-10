@@ -1,4 +1,5 @@
 import { NODE_ENV } from "@/app.config";
+import { ApiUserResponse } from "@/types/api-types";
 import { decodeToken } from "@/utils/functions";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -12,7 +13,9 @@ export async function GET(request: NextRequest) {
   const userLogged = await decodeToken(token);
   if (!userLogged)
     return NextResponse.json({ message: "User not found" }, { status: 401 });
-  const response = NextResponse.json({ user: userLogged });
+  
+  const apiUserResponse: ApiUserResponse = { user: userLogged };
+  const response = NextResponse.json(apiUserResponse);
   response.cookies.set("token", token, {
     httpOnly: true,
     secure: NODE_ENV === "production",

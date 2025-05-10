@@ -1,4 +1,10 @@
 "use client";
+import {
+  ApiErrorResponse,
+  ApiUserResponse,
+  LoginDTO,
+  SignUpDTO,
+} from "@/types/api-types";
 import { User } from "@/types/user-types";
 import {
   createContext,
@@ -11,30 +17,16 @@ import {
 // Creamos un contexto para el usuario logueado
 const AuthContext = createContext<{
   userLogged: User | null;
-  error: string | null;
-  loading: boolean;
-  signUp: ({
-    avatar,
-    username,
-    password,
-  }: {
-    avatar: string;
-    username: string;
-    password: string;
-  }) => Promise<boolean>;
-  login: ({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => Promise<boolean>;
+  isError: string | null;
+  isLoading: boolean;
+  signUp: (signUpCredentials: SignUpDTO) => Promise<boolean>;
+  login: (loginCredentials: LoginDTO) => Promise<boolean>;
 
   logout: () => Promise<boolean>;
 }>({
   userLogged: null,
-  error: null,
-  loading: false,
+  isError: null,
+  isLoading: false,
   signUp: () => Promise.resolve(false),
   login: () => Promise.resolve(false),
   logout: () => Promise.resolve(false),
@@ -48,8 +40,8 @@ export function AuthProvider({
 }>) {
   // Definimos los estados del contexto
   const [userLogged, setUserLogged] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Cargamos el usuario logueado al iniciar la aplicación
   useEffect(() => {
@@ -61,17 +53,16 @@ export function AuthProvider({
         });
 
         if (!response.ok) {
-          const error = (await response.json()) as { message: string };
+          const error = (await response.json()) as ApiErrorResponse;
           throw new Error(error.message);
         }
 
-        const { user } = (await response.json()) as { user: User };
+        const { user } = (await response.json()) as ApiUserResponse;
         setUserLogged(user);
       } catch (error) {
-        if (error instanceof Error) setError(error.message);
-        else setError("Error fetching user");
+        console.error(error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -90,7 +81,7 @@ export function AuthProvider({
   }) => {
     try {
       // Indicamos que estamos cargando
-      setLoading(true);
+      setIsLoading(true);
 
       // Validamos que los campos no estén vacíos
       if (username === "" || password === "")
@@ -106,19 +97,19 @@ export function AuthProvider({
       });
 
       if (!response.ok) {
-        const error = (await response.json()) as { message: string };
+        const error = (await response.json()) as ApiErrorResponse;
         throw new Error(error.message);
       }
 
-      const { user } = (await response.json()) as { user: User };
+      const { user } = (await response.json()) as ApiUserResponse;
       setUserLogged(user);
       return true;
     } catch (error) {
-      if (error instanceof Error) setError(error.message);
-      else setError("Error creating user");
+      if (error instanceof Error) setIsError(error.message);
+      else setIsError("Error creating user");
       return false;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -132,7 +123,7 @@ export function AuthProvider({
   }) => {
     try {
       // Indicamos que estamos cargando
-      setLoading(true);
+      setIsLoading(true);
 
       // Validamos que los campos no estén vacíos
       if (username === "" || password === "")
@@ -147,20 +138,20 @@ export function AuthProvider({
         method: "POST",
       });
       if (!response.ok) {
-        const error = (await response.json()) as { message: string };
+        const error = (await response.json()) as ApiErrorResponse;
         throw new Error(error.message);
       }
 
       // Guardamos el usuario en sessionStorage
-      const { user } = (await response.json()) as { user: User };
+      const { user } = (await response.json()) as ApiUserResponse;
       setUserLogged(user);
       return true;
     } catch (error) {
-      if (error instanceof Error) setError(error.message);
-      else setError("Error logging in");
+      if (error instanceof Error) setIsError(error.message);
+      else setIsError("Error logging in");
       return false;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -168,7 +159,7 @@ export function AuthProvider({
   const logout = async () => {
     try {
       // Indicamos que estamos cargando
-      setLoading(true);
+      setIsLoading(true);
 
       const response = await fetch("/api/auth/logout", {
         credentials: "include",
@@ -176,18 +167,18 @@ export function AuthProvider({
       });
 
       if (!response.ok) {
-        const error = (await response.json()) as { message: string };
+        const error = (await response.json()) as ApiErrorResponse;
         throw new Error(error.message);
       }
 
       setUserLogged(null);
       return true;
     } catch (error) {
-      if (error instanceof Error) setError(error.message);
-      else setError("Error logging out");
+      if (error instanceof Error) setIsError(error.message);
+      else setIsError("Error logging out");
       return false;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -196,8 +187,8 @@ export function AuthProvider({
     <AuthContext.Provider
       value={{
         userLogged,
-        error,
-        loading,
+        isError,
+        isLoading,
         signUp,
         login,
         logout,
