@@ -21,7 +21,7 @@ const titlesByLanguage = {
 export default function Footer() {
   const { language } = useLanguage();
   return (
-    <footer className="flex flex-col items-center justify-center border-t border-t-zinc-700 p-2 text-center">
+    <footer className="w-full flex flex-col items-center justify-center border-t border-t-zinc-700 p-2 text-center">
       <p className="">
         {titlesByLanguage[language as keyof typeof titlesByLanguage].title}
       </p>

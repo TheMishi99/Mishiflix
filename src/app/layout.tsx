@@ -30,7 +30,10 @@ export default function RootLayout({
         <LanguageProvider defaultLanguage="en-US">
           <AuthProvider>
             <LoaderProvider>
-              <div id="app" className="min-h-dvh flex flex-col gap-2">
+              <div
+                id="app"
+                className="min-h-dvh flex flex-col justify-start items-center gap-2"
+              >
                 <Header />
                 {children}
                 <Footer />
