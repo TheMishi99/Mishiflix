@@ -19,7 +19,7 @@ const presentationByLanguage = {
 export default function HomePage() {
   const { language } = useLanguage();
   return (
-    <div className="flex-1 flex flex-col justify-center items-center">
+    <div className="flex-1 flex flex-col justify-start items-center">
       <h2 className="text-xl text-center">
         {
           presentationByLanguage[
